@@ -17,25 +17,19 @@ jobs:
           python-version: 3.10.12
 
       - name: Install Dependencies
-        run:
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+        run: python -m pip install --upgrade pip && pip install -r requirements.txt
 
       - name: Extract Data
-        run:
-          python -c "from src.extract import fetch_data; fetch_data(['BMRI','BBRI','BBCA'])"
+        run: python -c "from src.extract import fetch_data; fetch_data(['BMRI','BBRI','BBCA'])"
 
       - name: Preprocess Data (Check Only)
-        run:
-          python -c "from src.preprocess import load_and_clean; [load_and_clean(f'data/raw/{t}.csv') for t in ['BMRI','BBRI','BBCA']]"
+        run: python -c "from src.preprocess import load_and_clean; [load_and_clean(f'data/raw/{t}.csv') for t in ['BMRI','BBRI','BBCA']]"
 
       - name: Train and Track Models (MLflow)
-        run:
-          python -c "from src.train import train_best_model; [train_best_model(tkr) for tkr in ['BMRI','BBRI','BBCA']]"
+        run: python -c "from src.train import train_best_model; [train_best_model(tkr) for tkr in ['BMRI','BBRI','BBCA']]"
 
       - name: Smoke Test Prediction
-        run:
-          python -c "from src.predict import forecast_next_days; [print(f'{t}:', forecast_next_days(t, days=3).flatten()) for t in ['BMRI','BBRI','BBCA']]"
+        run: python -c "from src.predict import forecast_next_days; [print(f'{t}:', forecast_next_days(t, days=3).flatten()) for t in ['BMRI','BBRI','BBCA']]"
 
       - name: Deploy Streamlit
         run: echo "Streamlit deployment not yet implemented."
