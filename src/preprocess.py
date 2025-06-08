@@ -4,7 +4,11 @@ from sklearn.preprocessing import MinMaxScaler
 
 def load_and_clean(path):
     df = pd.read_csv(path)
+    if 'Date' in df.columns:
+        df = df.set_index('Date')
     df = df[['Close']].dropna()
+    df['Close'] = pd.to_numeric(df['Close'], errors='coerce')
+    df = df.dropna()
     return df
 
 def scale_data(df):
