@@ -1,34 +1,47 @@
-name: CI/CD
+name: Stock Forecast CI/CD Pipeline
 
 on:
   push:
     branches: [main]
 
 jobs:
-  build:
+  stock-forecast:
     runs-on: ubuntu-latest
+    env:
+      MLFLOW_TRACKING_URI: http://localhost:5000 
 
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
           python-version: 3.10.12
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run data fetch & training
+      - name: Extract Stock Data
         run: |
           python -c "from src.extract import fetch_data; fetch_data(['BMRI','BBRI','BBCA'])"
-          python -c "from src.train import train_best_model; [train_best_model(tkr) for tkr in ['BMRI','BBRI','BBCA']]"
 
-      - name: Run tests (optional)
-        run: echo "No tests yet"
+      - name: Train Models (includes preprocessing & evaluation)
+        run: |
+          python -c "from src.train import train_best_model; [train_best_model(ticker) for ticker in ['BMRI','BBRI','BBCA']]"
 
-      - name: Streamlit Deployment (placeholder)
-        run: echo "Deploy Streamlit to your hosting platform"
+      - name: Smoke Test Prediction
+        run: |
+          python -c "
+from src.predict import forecast_next_days
+tickers = ['BMRI', 'BBRI', 'BBCA']
+for tkr in tickers:
+    preds = forecast_next_days(tkr, days=5)
+    print(f'Predictions for {tkr}:', preds.flatten())
+"
+
+      - name: Deploy Streamlit App (Placeholder)
+        run: |
+          echo "Deployment step here"

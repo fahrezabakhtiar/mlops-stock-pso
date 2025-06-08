@@ -7,7 +7,6 @@ from tensorflow.keras.callbacks import EarlyStopping
 from src.preprocess import load_and_clean, scale_data, create_windows
 from src.evaluate import mape_score
 
-
 def build_lstm_model(input_shape):
     model = Sequential()
     model.add(LSTM(50, activation='relu', input_shape=input_shape))
