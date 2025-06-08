@@ -1,20 +1,18 @@
-name: Stock Forecast CI/CD Pipeline
+name: 📈 Stock Forecast CI/CD
 
 on:
   push:
     branches: [main]
 
 jobs:
-  stock-forecast:
+  forecast-pipeline:
     runs-on: ubuntu-latest
-    env:
-      MLFLOW_TRACKING_URI: http://localhost:5000 
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Python 3.10
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: 3.10.12
@@ -24,24 +22,27 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Extract Stock Data
+      - name: Extract Data
         run: |
           python -c "from src.extract import fetch_data; fetch_data(['BMRI','BBRI','BBCA'])"
 
-      - name: Train Models (includes preprocessing & evaluation)
+      - name: Preprocess Data (Check Only)
         run: |
-          python -c "from src.train import train_best_model; [train_best_model(ticker) for ticker in ['BMRI','BBRI','BBCA']]"
+          python -c "from src.preprocess import load_and_clean; [load_and_clean(f'data/raw/{t}.csv') for t in ['BMRI','BBRI','BBCA']]"
+
+      - name: Train and Track Models (MLflow)
+        run: |
+          python -c "from src.train import train_best_model; [train_best_model(tkr) for tkr in ['BMRI','BBRI','BBCA']]"
 
       - name: Smoke Test Prediction
         run: |
-          python -c "
-from src.predict import forecast_next_days
-tickers = ['BMRI', 'BBRI', 'BBCA']
-for tkr in tickers:
-    preds = forecast_next_days(tkr, days=5)
-    print(f'Predictions for {tkr}:', preds.flatten())
-"
+          python -c "from src.predict import forecast_next_days; [print(f'{t}:', forecast_next_days(t, days=3).flatten()) for t in ['BMRI','BBRI','BBCA']]"
 
-      - name: Deploy Streamlit App (Placeholder)
-        run: |
-          echo "Deployment step here"
+      - name: Deploy Streamlit
+        run: echo "Streamlit deployment not yet implemented."
+
+      - name: Archive Models
+        uses: actions/upload-artifact@v3
+        with:
+          name: trained-models
+          path: models/
