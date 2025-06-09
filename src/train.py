@@ -43,7 +43,7 @@ def build_bidirectional_lstm_model(input_shape):
     model.compile(optimizer='adam', loss='mse')
     return model
 
-def train_best_model(ticker):
+def train_best_model(ticker, max_epochs=100):
     # Load and preprocess data
     df = load_and_clean(f"data/raw/{ticker}.csv")
     scaled, scaler = scale_data(df)
@@ -56,7 +56,7 @@ def train_best_model(ticker):
     y_train, y_test = y[:split], y[split:]
 
     # Define candidate models
-    candidates = {
+     candidates = {
         "lstm": build_lstm_model((X.shape[1], 1)),
         "gru": build_gru_model((X.shape[1], 1)),
         "simple_rnn": build_simple_rnn_model((X.shape[1], 1)),
@@ -71,13 +71,13 @@ def train_best_model(ticker):
     mlflow.set_experiment(f"{ticker}_forecast")
 
     # Train and evaluate each model
-    for name, model in candidates.items():
+     for name, model in candidates.items():
         with mlflow.start_run(run_name=name):
             early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
             model.fit(
                 X_train, y_train,
                 validation_data=(X_test, y_test),
-                epochs=100,
+                epochs=max_epochs,
                 batch_size=32,
                 callbacks=[early_stop],
                 verbose=0
