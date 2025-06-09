@@ -56,7 +56,7 @@ def train_best_model(ticker, max_epochs=100):
     y_train, y_test = y[:split], y[split:]
 
     # Define candidate models
-     candidates = {
+    candidates = {
         "lstm": build_lstm_model((X.shape[1], 1)),
         "gru": build_gru_model((X.shape[1], 1)),
         "simple_rnn": build_simple_rnn_model((X.shape[1], 1)),
@@ -71,7 +71,7 @@ def train_best_model(ticker, max_epochs=100):
     mlflow.set_experiment(f"{ticker}_forecast")
 
     # Train and evaluate each model
-     for name, model in candidates.items():
+    for name, model in candidates.items():
         with mlflow.start_run(run_name=name):
             early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
             model.fit(
