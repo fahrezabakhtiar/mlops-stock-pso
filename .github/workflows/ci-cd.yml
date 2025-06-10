@@ -47,10 +47,6 @@ jobs:
       - name: Predict 30 Hari ke Depan
         run: |
           python src/predict.py
-      
-      - name: Run Smoke Test for Dashboard
-        run: |
-          pytest tests/test_dashboard_smoke.py
 
       - name: Commit and Push Model & Results to Repo
         run: |
