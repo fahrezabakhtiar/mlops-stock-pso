@@ -46,15 +46,11 @@ if os.path.exists(csv_path):
         file_name=f"{ticker}_forecast.csv",
         mime="text/csv"
     )
-
-    # Ringkasan Statistik
-    st.markdown("#### 📊 Ringkasan Prediksi")
-    st.metric("Rata-rata Prediksi", f"{filtered_df['Forecast'].mean():,.2f}")
-    st.metric("Tertinggi", f"{filtered_df['Forecast'].max():,.2f}")
-    st.markdown(f"📅 Total Hari Diprediksi: **{len(filtered_df)} hari**")
-
-    if st.checkbox("🔍 Lihat Tabel Prediksi"):
-        st.dataframe(filtered_df.reset_index(drop=True), use_container_width=True)
+        # Ringkasan Statistik
+        st.markdown("#### 📊 Ringkasan Prediksi")
+        st.metric("Rata-rata Prediksi", f"{filtered_df['Forecast'].mean():,.2f}")
+        st.metric("Tertinggi", f"{filtered_df['Forecast'].max():,.2f}")
+        st.markdown(f"📅 Total Hari Diprediksi: **{len(filtered_df)} hari**")
 
 else:
     st.warning(f"File prediksi `{ticker}_forecast_30d.csv` belum ditemukan di folder models/.")
