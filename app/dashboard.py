@@ -10,7 +10,6 @@ MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "model
 
 # --- Header ---
 st.set_page_config(page_title="Stock Forecast Dashboard - Jakarta Stock Exchange", layout="wide")
-st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Bursa_Efek_Indonesia.png", width=80)
 st.title("📈 Jakarta Stock Forecasting Dashboard")
 st.caption("30-Day Forecasting Powered by Machine Learning")
 
