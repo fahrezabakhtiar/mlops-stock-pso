@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import plotly.express as px
 
 TICKERS = ['BMRI', 'BBRI', 'BBCA']
 # Path absolut ke folder models di root project
@@ -20,9 +21,17 @@ csv_path = os.path.join(MODEL_DIR, f"{ticker}_forecast_30d.csv")
 if os.path.exists(csv_path):
     df = pd.read_csv(csv_path)
     st.subheader(f"Forecast untuk {ticker}")
-    st.line_chart(df.set_index("Date")["Forecast"])
+    
+    # Line chart pakai plotly
+    fig = px.line(df, x="Date", y="Forecast", title=f"Forecast 30 Hari ke Depan: {ticker}")
+    st.plotly_chart(fig, use_container_width=True)
+    
     with st.expander("Lihat data tabel prediksi"):
-        st.dataframe(df, use_container_width=True)
+        # Tampilkan tabel tanpa index
+        try:
+            st.dataframe(df, hide_index=True, use_container_width=True)
+        except TypeError:
+            st.dataframe(df.reset_index(drop=True), use_container_width=True)
 else:
     st.warning(f"File prediksi `{ticker}_forecast_30d.csv` belum ditemukan di folder models/.")
 
@@ -37,11 +46,18 @@ if os.path.exists(mape_path):
     mape_df = pd.read_csv(mape_path)
     ticker_mapes = mape_df[mape_df['ticker'] == ticker]
     st.subheader(f"Akurasi (MAPE) untuk {ticker}")
-    st.dataframe(ticker_mapes, use_container_width=True)
+    try:
+        st.dataframe(ticker_mapes, hide_index=True, use_container_width=True)
+    except TypeError:
+        st.dataframe(ticker_mapes.reset_index(drop=True), use_container_width=True)
     st.subheader("Bar Chart Akurasi per Model")
-    st.bar_chart(ticker_mapes.set_index("model_type")["mape"])
+    fig2 = px.bar(ticker_mapes, x="model_type", y="mape", title=f"MAPE Tiap Model untuk {ticker}")
+    st.plotly_chart(fig2, use_container_width=True)
     st.subheader("Akurasi Seluruh Model & Ticker")
-    st.dataframe(mape_df, use_container_width=True)
+    try:
+        st.dataframe(mape_df, hide_index=True, use_container_width=True)
+    except TypeError:
+        st.dataframe(mape_df.reset_index(drop=True), use_container_width=True)
 else:
     st.warning("File all_models_mape_summary.csv belum ditemukan di folder models/.")
 
