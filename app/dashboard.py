@@ -10,6 +10,7 @@ MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "model
 
 # --- Header ---
 st.set_page_config(page_title="Stock Forecast Dashboard - Jakarta Stock Exchange", layout="wide")
+st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Bursa_Efek_Indonesia.png", width=80)
 st.title("📈 Jakarta Stock Forecasting Dashboard")
 st.caption("30-Day Forecasting Powered by Machine Learning")
 
@@ -39,12 +40,22 @@ if os.path.exists(csv_path):
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-      st.download_button(
-    "📥 Download Forecast CSV",
-    df.to_csv(index=False).encode(),
-    file_name=f"{ticker}_forecast.csv",
-    mime="text/csv")
-      
+        st.download_button(
+        "📥 Download Forecast CSV",
+        df.to_csv(index=False).encode(),
+        file_name=f"{ticker}_forecast.csv",
+        mime="text/csv"
+    )
+
+    # Ringkasan Statistik
+    st.markdown("#### 📊 Ringkasan Prediksi")
+    st.metric("Rata-rata Prediksi", f"{filtered_df['Forecast'].mean():,.2f}")
+    st.metric("Tertinggi", f"{filtered_df['Forecast'].max():,.2f}")
+    st.markdown(f"📅 Total Hari Diprediksi: **{len(filtered_df)} hari**")
+
+    if st.checkbox("🔍 Lihat Tabel Prediksi"):
+        st.dataframe(filtered_df.reset_index(drop=True), use_container_width=True)
+
 else:
     st.warning(f"File prediksi `{ticker}_forecast_30d.csv` belum ditemukan di folder models/.")
 
@@ -62,6 +73,7 @@ if os.path.exists(mape_path):
 
     st.info(f"Model Terbaik: {best_model} | MAPE: {best_mape:.4f}")
 
+    st.markdown(f"### Model Terbaik: **{best_model}**")
     st.markdown("### Perbandingan Akurasi Semua Model")
     st.dataframe(
         ticker_mapes[["model_type", "mape"]]
@@ -72,6 +84,6 @@ if os.path.exists(mape_path):
     )
 else:
     st.warning("File all_models_mape_summary.csv belum ditemukan di folder models/.")
-
+    
 st.markdown("---")
 st.caption("Made with Streamlit")
