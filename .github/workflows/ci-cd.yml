@@ -39,10 +39,10 @@ jobs:
         run: |
           python src/predict.py
 
-      - name: Upload Artifacts (Models, MAPE, Forecasts)
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-artifacts
-          path: |
-            models/
-            data/raw/
+      - name: Commit and Push Model & Results to Repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add models/* data/raw/* || true
+          git commit -m "Auto-commit: update models and results [ci skip]" || echo "Nothing to commit"
+          git push origin ${{ github.ref }}
