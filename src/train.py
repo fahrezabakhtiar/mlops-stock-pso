@@ -13,7 +13,7 @@ def create_windows(series, window_size=5):
     return np.array(X), np.array(y)
 
 def train_random_forest(ticker, window_size=5):
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(_file_)))
+    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
     MODELS_DIR = os.path.join(ROOT_DIR, "models")
     os.makedirs(MODELS_DIR, exist_ok=True)
@@ -40,6 +40,6 @@ def train_random_forest(ticker, window_size=5):
     pd.DataFrame([{"model": "random_forest", "mape": mape}]).to_csv(mape_path, index=False)
     print(f"MAPE for {ticker} (Random Forest): {mape:.4f}, saved to {mape_path}")
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     for ticker in ['BMRI', 'BBRI', 'BBCA']:
         train_random_forest(ticker)
