@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import os
 
-# List ticker yang tersedia (bisa diedit)
 TICKERS = ['BMRI', 'BBRI', 'BBCA']
-MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
+# Path absolut ke folder models di root project
+MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models"))
 
 st.set_page_config(page_title="Stock Forecast Dashboard", layout="centered")
 
@@ -35,13 +35,11 @@ mape_path = os.path.join(MODEL_DIR, "all_models_mape_summary.csv")
 
 if os.path.exists(mape_path):
     mape_df = pd.read_csv(mape_path)
-    # Optional filter by ticker
     ticker_mapes = mape_df[mape_df['ticker'] == ticker]
     st.subheader(f"Akurasi (MAPE) untuk {ticker}")
     st.dataframe(ticker_mapes, use_container_width=True)
     st.subheader("Bar Chart Akurasi per Model")
     st.bar_chart(ticker_mapes.set_index("model_type")["mape"])
-    
     st.subheader("Akurasi Seluruh Model & Ticker")
     st.dataframe(mape_df, use_container_width=True)
 else:
