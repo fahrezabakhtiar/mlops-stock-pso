@@ -1,13 +1,13 @@
 model,mape,ticker,model_type
 linear_regression,0.0194552674032222,BMRI,linear_regression
-knn,0.0289729009770132,BMRI,knn
-knn,0.0215229515694189,BBRI,knn
+knn,0.0289729017646745,BMRI,knn
+knn,0.0215229461184059,BBRI,knn
 svr,0.1330474368505883,BMRI,svr
 svr,0.098441969264571,BBCA,svr
 linear_regression,0.0138739533002432,BBCA,linear_regression
 linear_regression,0.0186572533950835,BBRI,linear_regression
 random_forest,0.0198717955548714,BBRI,random_forest
-knn,0.0171001922336951,BBCA,knn
+knn,0.0171001909979147,BBCA,knn
 random_forest,0.0223220912340986,BMRI,random_forest
 random_forest,0.0153194118225322,BBCA,random_forest
 svr,0.0530735557878666,BBRI,svr
