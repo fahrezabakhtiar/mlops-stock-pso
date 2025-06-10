@@ -3,7 +3,7 @@ name: MLOps Stock Forecast Pipeline
 on:
   push:
     branches:
-      - development
+      - main
 
 jobs:
   mlops-pipeline:
