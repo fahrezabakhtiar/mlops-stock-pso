@@ -10,6 +10,7 @@ MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "model
 
 # --- Header ---
 st.set_page_config(page_title="Stock Forecast Dashboard - Jakarta Stock Exchange", layout="wide")
+st.image("https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Bursa_Efek_Indonesia.png", width=80)
 st.title("📈 Jakarta Stock Forecasting Dashboard")
 st.caption("30-Day Forecasting Powered by Machine Learning")
 
@@ -24,7 +25,11 @@ if os.path.exists(csv_path):
     df['Date'] = pd.to_datetime(df['Date'])
 
     st.subheader(f"Prediksi Harga 30 Hari ke Depan ({ticker})")
-    date_range = st.date_input("Filter Tanggal", [df['Date'].min(), df['Date'].max()])
+    from datetime import datetime, timedelta
+
+    today = datetime.today().date()
+    end_date = today + timedelta(days=30)
+    date_range = st.sidebar.date_input("Filter Tanggal", [today, end_date], min_value=today, max_value=end_date)
     filtered_df = df[(df['Date'] >= pd.to_datetime(date_range[0])) & (df['Date'] <= pd.to_datetime(date_range[1]))]
 
     col1, col2 = st.columns([2, 1])
@@ -35,8 +40,12 @@ if os.path.exists(csv_path):
         st.plotly_chart(fig, use_container_width=True)
 
     with col2:
-        st.download_button("📥 Download Forecast CSV", df.to_csv(index=False).encode(),
-                           file_name=f"{ticker}_forecast.csv", mime="text/csv")
+      st.download_button(
+    "📥 Download Forecast CSV",
+    df.to_csv(index=False).encode(),
+    file_name=f"{ticker}_forecast.csv",
+    mime="text/csv")
+      
 else:
     st.warning(f"File prediksi `{ticker}_forecast_30d.csv` belum ditemukan di folder models/.")
 
@@ -52,9 +61,8 @@ if os.path.exists(mape_path):
     best_model = best_row["model_type"].replace("_", " ").title()
     best_mape = best_row["mape"]
 
-    st.info(f"MAPE: {best_mape:.4f}")
-
-    st.markdown(f"### Model Terbaik: **{best_model}**")
+    st.info(f"Model Terbaik: {best_model} | MAPE: {best_mape:.4f}")
+    
     st.markdown("### Perbandingan Akurasi Semua Model")
     st.dataframe(
         ticker_mapes[["model_type", "mape"]]
@@ -67,4 +75,4 @@ else:
     st.warning("File all_models_mape_summary.csv belum ditemukan di folder models/.")
 
 st.markdown("---")
-st.caption("Made with ❤️ by MLOps Team (Reza, Satria, Dika, Irsyad) | Last updated: " + pd.Timestamp.now().strftime("%Y-%m-%d %H:%M"))
+st.caption("Made with Streamlit")
