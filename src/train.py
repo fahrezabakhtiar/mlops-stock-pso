@@ -41,5 +41,5 @@ def train_linear_regression_model(ticker, window_size=5):
     print(f"MAPE for {ticker} (Linear Regression): {mape:.4f}, saved to {mape_path}")
 
 if __name__ == "__main__":
-    for ticker in ['BMRI', 'BBRI', 'BBCA', 'AAPL']:
+    for ticker in ['BMRI', 'BBRI', 'BBCA', 'BBNI']:
         train_linear_regression_model(ticker)

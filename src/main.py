@@ -12,7 +12,7 @@ from extract import fetch_data
 from select_best_model import main as select_best_model_main
 from predict import predict_next_days
 
-TICKERS = ['BMRI', 'BBRI', 'BBCA', 'AAPL']
+TICKERS = ['BMRI', 'BBRI', 'BBCA', 'BBNI']
 
 def run_extract():
     print("=== EXTRACT ===")

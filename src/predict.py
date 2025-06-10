@@ -46,5 +46,5 @@ def predict_next_days(ticker, window_size=5, n_days=30):
     return forecast_df
 
 if __name__ == "__main__":
-    for ticker in ['BMRI', 'BBRI', 'BBCA', 'AAPL']:
+    for ticker in ['BMRI', 'BBRI', 'BBCA', 'BBNI']:
         predict_next_days(ticker)
