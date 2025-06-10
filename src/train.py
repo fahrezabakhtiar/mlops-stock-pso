@@ -1,97 +1,44 @@
 import os
-import mlflow
+import pandas as pd
 import numpy as np
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, GRU, Dense, SimpleRNN, Conv1D, Flatten, Bidirectional
-from tensorflow.keras.callbacks import EarlyStopping
-from src.preprocess import load_and_clean, scale_data, create_windows
-from src.evaluate import mape_score
+import pickle
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_absolute_percentage_error
 
-def build_lstm_model(input_shape):
-    model = Sequential()
-    model.add(LSTM(50, activation='relu', input_shape=input_shape))
-    model.add(Dense(1))
-    model.compile(optimizer='adam', loss='mse')
-    return model
+def create_windows(series, window_size=5):
+    X, y = [], []
+    for i in range(len(series) - window_size):
+        X.append(series[i:i+window_size])
+        y.append(series[i+window_size])
+    return np.array(X), np.array(y)
 
-def build_gru_model(input_shape):
-    model = Sequential()
-    model.add(GRU(50, activation='relu', input_shape=input_shape))
-    model.add(Dense(1))
-    model.compile(optimizer='adam', loss='mse')
-    return model
+def train_linear_regression(ticker, window_size=5):
+    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
+    MODELS_DIR = os.path.join(ROOT_DIR, "models")
+    os.makedirs(MODELS_DIR, exist_ok=True)
 
-def build_simple_rnn_model(input_shape):
-    model = Sequential()
-    model.add(SimpleRNN(50, activation='relu', input_shape=input_shape))
-    model.add(Dense(1))
-    model.compile(optimizer='adam', loss='mse')
-    return model
-
-def build_cnn_model(input_shape):
-    model = Sequential()
-    model.add(Conv1D(filters=64, kernel_size=3, activation='relu', input_shape=input_shape))
-    model.add(Flatten())
-    model.add(Dense(1))
-    model.compile(optimizer='adam', loss='mse')
-    return model
-
-def build_bidirectional_lstm_model(input_shape):
-    model = Sequential()
-    model.add(Bidirectional(LSTM(50, activation='relu'), input_shape=input_shape))
-    model.add(Dense(1))
-    model.compile(optimizer='adam', loss='mse')
-    return model
-
-def train_best_model(ticker, max_epochs=100):
-    # Load and preprocess data
-    df = load_and_clean(f"data/raw/{ticker}.csv")
-    scaled, scaler = scale_data(df)
-    X, y = create_windows(scaled)
-    X = X.reshape((X.shape[0], X.shape[1], 1))
-
-    # Split train-test
+    df = pd.read_csv(os.path.join(RAW_DIR, f"{ticker}.csv"))
+    series = df['Close'].values
+    X, y = create_windows(series, window_size)
     split = int(0.8 * len(X))
     X_train, X_test = X[:split], X[split:]
     y_train, y_test = y[:split], y[split:]
 
-    # Define candidate models
-    candidates = {
-        "lstm": build_lstm_model((X.shape[1], 1)),
-        "gru": build_gru_model((X.shape[1], 1)),
-        "simple_rnn": build_simple_rnn_model((X.shape[1], 1)),
-        "cnn": build_cnn_model((X.shape[1], 1)),
-        "bidirectional_lstm": build_bidirectional_lstm_model((X.shape[1], 1))
-    }
+    model = LinearRegression()
+    model.fit(X_train, y_train)
+    preds = model.predict(X_test)
+    mape = mean_absolute_percentage_error(y_test, preds)
 
-    best_model = None
-    best_score = float("inf")
-    best_name = ""
+    model_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_model.pkl")
+    with open(model_path, "wb") as f:
+        pickle.dump(model, f)
+    print(f"Saved model: {model_path}")
 
-    mlflow.set_experiment(f"{ticker}_forecast")
+    mape_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_mape.csv")
+    pd.DataFrame([{"model": "linear_regression", "mape": mape}]).to_csv(mape_path, index=False)
+    print(f"MAPE for {ticker} (Linear Regression): {mape:.4f}, saved to {mape_path}")
 
-    # Train and evaluate each model
-    for name, model in candidates.items():
-        with mlflow.start_run(run_name=name):
-            early_stop = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-            model.fit(
-                X_train, y_train,
-                validation_data=(X_test, y_test),
-                epochs=max_epochs,
-                batch_size=32,
-                callbacks=[early_stop],
-                verbose=0
-            )
-            preds = model.predict(X_test)
-            score = mape_score(y_test, preds)
-            mlflow.log_metric("mape", score)
-
-            if score < best_score:
-                best_score = score
-                best_model = model
-                best_name = name
-
-    # Save best model
-    os.makedirs("models", exist_ok=True)
-    best_model.save(f"models/{ticker}_model.h5")
-    print(f"Best model for {ticker} is '{best_name}' with MAPE: {best_score:.4f}")
+if __name__ == "__main__":
+    for ticker in ['BMRI', 'BBRI', 'BBCA']:
+        train_linear_regression(ticker)

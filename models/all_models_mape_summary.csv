@@ -1,0 +1,10 @@
+model,mape,ticker,model_type
+linear_regression,0.0138739533002432,BBCA,linear_regression
+random_forest,0.0152971022692315,BBCA,random_forest
+svr,0.098441969264571,BBCA,svr
+linear_regression,0.0186572533950835,BBRI,linear_regression
+random_forest,0.0198516194304936,BBRI,random_forest
+svr,0.0530735557878666,BBRI,svr
+linear_regression,0.0194552674032222,BMRI,linear_regression
+random_forest,0.0222711712763899,BMRI,random_forest
+svr,0.1330474368505883,BMRI,svr

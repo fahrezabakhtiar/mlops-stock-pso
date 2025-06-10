@@ -1,26 +1,39 @@
+# src/extract.py
+
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
 import os
 
 def fetch_data(tickers, start="2022-01-01", end=None):
+    # Dapatkan path ke root project (parent dari src)
+    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
+    os.makedirs(RAW_DIR, exist_ok=True)
+
     if end is None:
         end = datetime.today().strftime('%Y-%m-%d')
-    os.makedirs("data/raw", exist_ok=True)
 
     for ticker in tickers:
+        print(f"Fetching {ticker}...")
         df = yf.download(ticker + ".JK", start=start, end=end, auto_adjust=True)
+        if df.empty:
+            print(f"Warning: No data for {ticker}")
+            continue
 
-        # Jika kolomnya MultiIndex, datarkan
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = ['_'.join(col).strip() for col in df.columns.values]
 
-        # Cari kolom 'Close' apapun bentuknya
         close_col = [col for col in df.columns if 'Close' in col][0]
         df = df[[close_col]].dropna()
-        df = df.rename(columns={close_col: 'Close'})  # ganti nama jadi konsisten
-
+        df = df.rename(columns={close_col: 'Close'})
         df = df.reset_index()
         df['Ticker'] = ticker
         df = df[['Date', 'Ticker', 'Close']]
-        df.to_csv(f"data/raw/{ticker}.csv", index=False)
+        out_path = os.path.join(RAW_DIR, f"{ticker}.csv")
+        df.to_csv(out_path, index=False)
+        print(f"Saved: {out_path}")
+
+if __name__ == "__main__":
+    tickers = ['BMRI', 'BBRI', 'BBCA']
+    fetch_data(tickers)

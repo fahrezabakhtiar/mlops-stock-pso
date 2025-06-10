@@ -2,6 +2,3 @@ yfinance
 pandas
 numpy
 scikit-learn
-tensorflow
-mlflow
-streamlit
