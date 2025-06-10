@@ -1,23 +1,51 @@
 import streamlit as st
-from src.predict import forecast_next_days
 import pandas as pd
-from datetime import datetime, timedelta
+import os
 
-st.title("Prediksi Saham IDX")
+# List ticker yang tersedia (bisa diedit)
+TICKERS = ['BMRI', 'BBRI', 'BBCA']
+MODEL_DIR = os.path.join(os.path.dirname(__file__), "models")
 
-ticker = st.selectbox("Pilih ticker", ["BMRI", "BBRI", "BBCA"])
-days = st.slider("Jumlah hari ke depan untuk prediksi:", 1, 30, 10)  # max 30, default 10
+st.set_page_config(page_title="Stock Forecast Dashboard", layout="centered")
 
-try:
-    data = forecast_next_days(ticker, days=days)
-    df = pd.DataFrame(data, columns=["Predicted Close"])
+st.title("Stock 30-Day Forecast Dashboard")
 
-    # Buat kolom tanggal prediksi, mulai dari besok
-    start_date = datetime.today() + timedelta(days=1)
-    df['Date'] = [start_date + timedelta(days=i) for i in range(days)]
-    df = df.set_index('Date')
+# === Bagian Forecast Per Ticker ===
+st.header("Prediksi 30 Hari ke Depan")
 
-    st.line_chart(df["Predicted Close"])
-    st.dataframe(df)
-except Exception as e:
-    st.error(f"Terjadi kesalahan saat memuat prediksi: {e}")
+ticker = st.selectbox("Pilih Ticker", TICKERS)
+
+csv_path = os.path.join(MODEL_DIR, f"{ticker}_forecast_30d.csv")
+
+if os.path.exists(csv_path):
+    df = pd.read_csv(csv_path)
+    st.subheader(f"Forecast untuk {ticker}")
+    st.line_chart(df.set_index("Date")["Forecast"])
+    with st.expander("Lihat data tabel prediksi"):
+        st.dataframe(df, use_container_width=True)
+else:
+    st.warning(f"File prediksi `{ticker}_forecast_30d.csv` belum ditemukan di folder models/.")
+
+st.markdown("---")
+
+# === Bagian Summary Akurasi (MAPE) ===
+st.header("Tabel Akurasi Semua Model (MAPE)")
+
+mape_path = os.path.join(MODEL_DIR, "all_models_mape_summary.csv")
+
+if os.path.exists(mape_path):
+    mape_df = pd.read_csv(mape_path)
+    # Optional filter by ticker
+    ticker_mapes = mape_df[mape_df['ticker'] == ticker]
+    st.subheader(f"Akurasi (MAPE) untuk {ticker}")
+    st.dataframe(ticker_mapes, use_container_width=True)
+    st.subheader("Bar Chart Akurasi per Model")
+    st.bar_chart(ticker_mapes.set_index("model_type")["mape"])
+    
+    st.subheader("Akurasi Seluruh Model & Ticker")
+    st.dataframe(mape_df, use_container_width=True)
+else:
+    st.warning("File all_models_mape_summary.csv belum ditemukan di folder models/.")
+
+st.markdown("---")
+st.caption("Built with Streamlit | Data MLOps Stock Forecast")
