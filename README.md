@@ -20,6 +20,7 @@ Daftar ticker dapat diubah dengan bebas melalui `src/config.py` selama merupakan
 Tanggal awal data (`start=`) bisa disesuaikan di `extract.py` sesuai kebutuhan, misalnya:
 ```python
 fetch_data(tickers, start="2020-01-01")
+```
 
 ## 🧰 Tools yang Digunakan
 ### Python Packages
