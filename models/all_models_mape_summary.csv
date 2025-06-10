@@ -7,10 +7,10 @@ knn,0.0289729001312676,BMRI,knn
 random_forest,0.0218139828617081,BBNI,random_forest
 linear_regression,0.0196068314870572,BBNI,linear_regression
 knn,0.0215229447352374,BBRI,knn
-svr,0.1330505049135619,BMRI,svr
-svr,0.0984585856755324,BBCA,svr
+svr,0.1330505049130038,BMRI,svr
+svr,0.0984585858587834,BBCA,svr
 linear_regression,0.0138739569370906,BBCA,linear_regression
-svr,0.0699696398767937,BBNI,svr
+svr,0.0699696400660106,BBNI,svr
 svr,0.0445830928837054,GOTO,svr
 linear_regression,0.0186572584904645,BBRI,linear_regression
 random_forest,0.0198682631783113,BBRI,random_forest
@@ -18,4 +18,4 @@ knn,0.0171001928132198,BBCA,knn
 random_forest,0.0222920970588312,BMRI,random_forest
 random_forest,0.0152812745564757,BBCA,random_forest
 random_forest,0.0332673215795802,GOTO,random_forest
-svr,0.0530785886458746,BBRI,svr
+svr,0.0530785941964978,BBRI,svr
