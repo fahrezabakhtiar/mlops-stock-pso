@@ -1,0 +1,1 @@
+TICKERS = ['BBRI', 'BMRI', 'BBCA', 'BBNI','GOTO']

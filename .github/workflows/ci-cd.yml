@@ -1,10 +1,12 @@
-name: Stock Forecast CI/CD
+name: MLOps Stock Forecast Pipeline
+
 on:
   push:
-    branches: [main]
+    branches:
+      - development
 
 jobs:
-  build:
+  mlops-pipeline:
     runs-on: ubuntu-latest
 
     steps:
@@ -14,48 +16,75 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10.12
+          python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Set MLflow Tracking Directory
-        run: mkdir -p /tmp/mlruns
+          pip install pytest
 
       - name: Extract Data
         run: |
-          python -c "
-          from src.extract import fetch_data;
-          fetch_data(['BMRI','BBRI','BBCA'])"
-          ls -lh data/raw/
+          python src/extract.py
 
-      - name: Preprocess Data (Check Only)
+      - name: Train Model
         run: |
-          python -c "
-          from src.preprocess import load_and_clean;
-          [load_and_clean(f'data/raw/{t}.csv') for t in ['BMRI','BBRI','BBCA']]"
+          python src/train.py
 
-      - name: Train and Track Models (MLflow)
+      - name: Select Best Model
         run: |
-          python -c "
-          import os
-          os.environ['MLFLOW_TRACKING_URI'] = 'file:///tmp/mlruns'
-          from src.train import train_best_model
-          [train_best_model(t, max_epochs=5) for t in ['BMRI','BBRI','BBCA']]"
+          python src/select_best_model.py
 
-      - name: Smoke Test Prediction
+      - name: Predict 30 Hari ke Depan
         run: |
-          python -c "
-          from src.predict import forecast_next_days
-          [print(f'{t}:', forecast_next_days(t, days=3).flatten()) for t in ['BMRI','BBRI','BBCA']]"
+          python src/predict.py
 
-      - name: Check Saved Models
-        run: ls -lh models/
+      - name: Commit and Push Model & Results to Repo
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add models/* data/raw/* || true
+          git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push origin ${{ github.ref }}
 
-      - name: Archive Models
-        uses: actions/upload-artifact@v4
+      - name: Send Success Email Notification
+        if: success()
+        uses: dawidd6/action-send-mail@v3
         with:
-          name: trained-models
-          path: models/
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "[✅ Success] MLOps Forecast Pipeline Berhasil 🚀"
+          to: fahrezabakhtiar12@gmail.com, cahyaandika001@gmail.com, fahmiirsyad77@gmail.com, mastersatria2014@gmail.com
+          from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            🎉 Pipeline **BERHASIL** dijalankan.
+
+            📦 Repo     : ${{ github.repository }}
+            🔀 Branch   : ${{ github.ref_name }}
+            🔖 Commit   : ${{ github.sha }}
+            🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      - name: Send Failure Email Notification
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "[❌ FAILED] MLOps Forecast Pipeline Gagal ❗"
+          to: fahrezabakhtiar12@gmail.com, cahyaandika001@gmail.com, fahmiirsyad77@gmail.com, mastersatria2014@gmail.com
+          from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
+          body: |
+            ❌ Pipeline **GAGAL** dijalankan.
+
+            📦 Repo     : ${{ github.repository }}
+            🔀 Branch   : ${{ github.ref_name }}
+            🔖 Commit   : ${{ github.sha }}
+            🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
