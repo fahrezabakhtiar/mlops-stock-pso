@@ -16,7 +16,7 @@ st.header("Prediksi 30 Hari ke Depan")
 
 ticker = st.selectbox("Pilih Ticker", TICKERS)
 
-csv_path = os.path.join(MODEL_DIR, f"{ticker}_forecast_30d.csv")
+csv_path = os.path.join(MODEL_DIR, f"/{ticker}_forecast_30d.csv")
 
 if os.path.exists(csv_path):
     df = pd.read_csv(csv_path)
