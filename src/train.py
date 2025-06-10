@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import pickle
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_percentage_error
 
 def create_windows(series, window_size=5):
@@ -12,7 +12,7 @@ def create_windows(series, window_size=5):
         y.append(series[i+window_size])
     return np.array(X), np.array(y)
 
-def train_knn_model(ticker, window_size=5):
+def train_linear_regression_model(ticker, window_size=5):
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
     MODELS_DIR = os.path.join(ROOT_DIR, "models")
@@ -25,21 +25,21 @@ def train_knn_model(ticker, window_size=5):
     X_train, X_test = X[:split], X[split:]
     y_train, y_test = y[:split], y[split:]
 
-    # MODEL: KNN
-    model = KNeighborsRegressor()
+    # MODEL: Linear Regression
+    model = LinearRegression()
     model.fit(X_train, y_train)
     preds = model.predict(X_test)
     mape = mean_absolute_percentage_error(y_test, preds)
 
-    model_path = os.path.join(MODELS_DIR, f"{ticker}_knn_model.pkl")
+    model_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_model.pkl")
     with open(model_path, "wb") as f:
         pickle.dump(model, f)
     print(f"Saved model: {model_path}")
 
-    mape_path = os.path.join(MODELS_DIR, f"{ticker}_knn_mape.csv")
-    pd.DataFrame([{"model": "knn", "mape": mape}]).to_csv(mape_path, index=False)
-    print(f"MAPE for {ticker} (KNN): {mape:.4f}, saved to {mape_path}")
+    mape_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_mape.csv")
+    pd.DataFrame([{"model": "linear_regression", "mape": mape}]).to_csv(mape_path, index=False)
+    print(f"MAPE for {ticker} (Linear Regression): {mape:.4f}, saved to {mape_path}")
 
 if __name__ == "__main__":
     for ticker in ['BMRI', 'BBRI', 'BBCA']:
-        train_knn_model(ticker)
+        train_linear_regression_model(ticker)
