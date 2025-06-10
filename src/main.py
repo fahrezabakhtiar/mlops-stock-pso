@@ -2,17 +2,15 @@ import sys
 import os
 import traceback
 import subprocess
+from extract import fetch_data
+from config import TICKERS
+from select_best_model import main as select_best_model_main
+from predict import predict_next_days
 
 # Pastikan path root ada di sys.path (agar import tetap aman jika run dari root atau src)
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
-
-from extract import fetch_data
-from select_best_model import main as select_best_model_main
-from predict import predict_next_days
-
-TICKERS = ['BMRI', 'BBRI', 'BBCA', 'BBNI']
 
 def run_extract():
     print("=== EXTRACT ===")

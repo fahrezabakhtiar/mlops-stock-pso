@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_percentage_error
+from config import TICKERS
 
 def create_windows(series, window_size=5):
     X, y = [], []
@@ -41,5 +42,5 @@ def train_linear_regression_model(ticker, window_size=5):
     print(f"MAPE for {ticker} (Linear Regression): {mape:.4f}, saved to {mape_path}")
 
 if __name__ == "__main__":
-    for ticker in ['BMRI', 'BBRI', 'BBCA', 'BBNI']:
+    for ticker in TICKERS:
         train_linear_regression_model(ticker)

@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 import pickle
+from config import TICKERS
 
 def predict_next_days(ticker, window_size=5, n_days=30):
     ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,5 +47,5 @@ def predict_next_days(ticker, window_size=5, n_days=30):
     return forecast_df
 
 if __name__ == "__main__":
-    for ticker in ['BMRI', 'BBRI', 'BBCA', 'BBNI']:
+    for ticker in TICKERS:
         predict_next_days(ticker)

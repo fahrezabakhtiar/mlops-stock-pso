@@ -2,12 +2,14 @@ import streamlit as st
 import pandas as pd
 import os
 import plotly.express as px
+import sys, os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
+from config import TICKERS
 
-TICKERS = ['BMRI', 'BBRI', 'BBCA', 'BBNI']
 MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models"))
 
-st.set_page_config(page_title="Stock Forecast Dashboard", layout="centered")
-st.title("📈 Stock 30-Day Forecast Dashboard")
+st.set_page_config(page_title="Stock Forecast Dashboard -  Jakarta Stock Exchange", layout="centered")
+st.title("Stock 30-Day Forecast Dashboard -  Jakarta Stock Exchange")
 
 ticker = st.selectbox("Pilih Ticker", TICKERS)
 

@@ -1,9 +1,8 @@
-# src/extract.py
-
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
 import os
+from config import TICKERS
 
 def fetch_data(tickers, start="2022-01-01", end=None):
     # Dapatkan path ke root project (parent dari src)
@@ -35,5 +34,5 @@ def fetch_data(tickers, start="2022-01-01", end=None):
         print(f"Saved: {out_path}")
 
 if __name__ == "__main__":
-    tickers = ['BMRI', 'BBRI', 'BBCA', 'BBNI']
+    tickers = TICKERS
     fetch_data(tickers)
