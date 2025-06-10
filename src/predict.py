@@ -37,7 +37,7 @@ def predict_next_days(ticker, window_size=5, n_days=30):
     # Simpan ke CSV
     forecast_path = os.path.join(MODELS_DIR, f"{ticker}_forecast_30d.csv")
     last_date = pd.to_datetime(df['Date'].iloc[-1])
-    future_days = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=n_days, freq="D")
+    future_days = pd.date_range(start=last_date + pd.Timedelta(days=1), periods=n_days, freq="B")
     forecast_df = pd.DataFrame({
         "Date": future_days,
         "Forecast": predictions
