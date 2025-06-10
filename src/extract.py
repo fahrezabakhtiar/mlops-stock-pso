@@ -35,5 +35,5 @@ def fetch_data(tickers, start="2022-01-01", end=None):
         print(f"Saved: {out_path}")
 
 if __name__ == "__main__":
-    tickers = ['BMRI', 'BBRI', 'BBCA']
+    tickers = ['BMRI', 'BBRI', 'BBCA', 'AAPL']
     fetch_data(tickers)
