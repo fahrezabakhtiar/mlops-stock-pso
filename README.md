@@ -26,6 +26,32 @@ fetch_data(tickers, start="2020-01-01")
 ### 🔄 Model Training (`train.py`)
 File `train.py` dapat disesuaikan dengan model apapun (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main, kecuali push README.md.
 
+## 🧠 Folder `list train model/` — Kumpulan Model Siap Pakai
+Untuk memudahkan eksperimen dan penggantian model dalam pipeline, proyek ini menyediakan folder `list train model/` yang berisi beberapa skrip pelatihan model machine learning yang sudah distandarisasi.
+
+Jika disalin dan dicommit ke `train.py`, maka setiap file skrip:
+- Menggunakan struktur template yang seragam
+- Menyimpan model hasil pelatihan ke direktori `models/`
+- Mencatat performa (MAPE) ke dalam file `.csv`
+- Akan terdeteksi otomatis oleh pipeline untuk proses seleksi model terbaik
+
+### 📦 Daftar Model yang Tersedia
+| Model                          | File Python                      |
+|--------------------------------|----------------------------------|
+| CatBoost                       | `catboost.py`          |
+| Decision Tree Regressor       | `decision_tree.py`     |
+| K-Nearest Neighbors (KNN)      | `knn.py`               |
+| LightGBM                       | `light_gbm.py`          |
+| Linear Regression              | `linear_regression.py` |
+| Random Forest                  | `random_forest.py`                |
+| Ridge Regression               | `ridge.py`             |
+| Support Vector Regressor (SVR) | `svr.py`               |
+| XGBoost                        | `xgboost.py`           |
+
+### 💡Cara Pakai
+* Cukup salin isi salah satu file ke dalam `train.py` untuk mengubah model pelatihan. Hasil evaluasi otomatis akan digunakan oleh pipeline saat commit dijalankan.
+* Folder ini juga berguna sebagai referensi untuk menambahkan model baru ke pipeline CI/CD tanpa perlu menulis ulang.
+
 ## 🧰 Tools yang Digunakan
 ### Python Packages
 - `yfinance` — ekstraksi data saham dari Yahoo Finance  
@@ -101,7 +127,7 @@ Setelah venv aktif, install dengan:
 pip install -r requirements.txt
 ```
 
-5. Jalankan pipeline end-to-end (Anda dapat mengubah `config.py`, `extract.py`,`train.py` jika diinginkan)
+5. Anda terlebih dahulu dapat mengubah `config.py`, `extract.py`,`train.py` jika diinginkan, lalu jalankan pipeline end-to-end.
    
 ```bash 
 python src/main.py
@@ -130,9 +156,9 @@ deactivate
 ## ⚙️ Cara Menjalankan di Streamlit Cloud (Deployment Environment)
 
 1. Push project ke GitHub
-Pastikan repo Anda terdapat: app/dashboard.py
+2. Pastikan repo Anda terdapat: app/dashboard.py
 
-2. Kunjungi: https://streamlit.io/
+3. Kunjungi: https://streamlit.io/
 
   ![image](https://github.com/user-attachments/assets/f41aefa7-b812-4cb0-8650-d7ca28c3e626)
 
