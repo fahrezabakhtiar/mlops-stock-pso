@@ -15,9 +15,6 @@ Kunjungi link berikut ini: https://stock-mlops-1c.streamlit.app/
 - Pipeline otomatis via GitHub Actions
 
 ## ⚙️ Konfigurasi Fleksibel untuk Test Pipeline
-### 🔄 Model Training (`train.py`)
-File `train.py` dapat disesuaikan dengan model apapun (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali script dijalankan atau CI/CD di-trigger oleh commit.
-
 ### 📈 Ticker Saham (`config.py`)
 Daftar ticker dapat diubah dengan bebas melalui `src/config.py` selama merupakan kode saham dari **Bursa Efek Indonesia (dengan akhiran `.JK`)**, misalnya `BBRI`, `BMRI`, `BBCA`, dll.
 
@@ -26,6 +23,8 @@ Tanggal awal data (`start=`) bisa disesuaikan di `extract.py` sesuai kebutuhan, 
 ```python
 fetch_data(tickers, start="2020-01-01")
 ```
+### 🔄 Model Training (`train.py`)
+File `train.py` dapat disesuaikan dengan model apapun (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main, kecuali push README.md.
 
 ## 🧰 Tools yang Digunakan
 ### Python Packages
@@ -102,7 +101,7 @@ Setelah venv aktif, install dengan:
 pip install -r requirements.txt
 ```
 
-5. Jalankan pipeline end-to-end (Anda dapat mengubah 'config.py', 'extract.py','train.py' jika diinginkan)
+5. Jalankan pipeline end-to-end (Anda dapat mengubah `config.py`, `extract.py`,`train.py` jika diinginkan)
    
 ```bash 
 python src/main.py
