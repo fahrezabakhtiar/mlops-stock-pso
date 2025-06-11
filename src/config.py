@@ -1,1 +1,1 @@
-TICKERS = ['BBRI', 'BMRI', 'BBCA', 'BBNI','GOTO','KAII']
+TICKERS = ['BBRI', 'BMRI', 'BBCA', 'BBNI','GOTO','TLKM']
