@@ -1,5 +1,6 @@
 model,mape,ticker,model_type
 knn,0.0359139747990193,GOTO,knn
+decision_tree,0.0264850243958467,BBRI,decision_tree
 linear_regression,0.0269687627524732,GOTO,linear_regression
 linear_regression,0.0194552666843925,BMRI,linear_regression
 knn,0.0261899556179551,BBNI,knn
@@ -11,11 +12,15 @@ svr,0.1311838016330793,BMRI,svr
 svr,0.097423042417546,BBCA,svr
 linear_regression,0.0138739569370906,BBCA,linear_regression
 svr,0.0689853642426193,BBNI,svr
+decision_tree,0.0267194645208703,BMRI,decision_tree
 svr,0.0446357732177507,GOTO,svr
 linear_regression,0.0186572584904645,BBRI,linear_regression
 random_forest,0.0198682631783113,BBRI,random_forest
+decision_tree,0.0249809215989115,BBNI,decision_tree
 knn,0.0171001928132198,BBCA,knn
 random_forest,0.0222920970588312,BMRI,random_forest
+decision_tree,0.0190421985611336,BBCA,decision_tree
 random_forest,0.0152812745564757,BBCA,random_forest
+decision_tree,0.0441317351304402,GOTO,decision_tree
 random_forest,0.0332673215795802,GOTO,random_forest
 svr,0.0524173174547691,BBRI,svr
