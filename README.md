@@ -24,7 +24,7 @@ Tanggal awal data (`start=`) bisa disesuaikan di `extract.py` sesuai kebutuhan, 
 fetch_data(tickers, start="2020-01-01")
 ```
 ### 🔄 Model Training (`train.py`)
-File `train.py` dapat disesuaikan dengan model apapun (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main, kecuali push README.md.
+File `train.py` dapat disesuaikan dengan model-model yang diinginkan (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main pada path yang didefinisikan di `ci-cd.yml`.
 
 ## 🧠 Folder `list train model/` — Kumpulan Model Siap Pakai
 Untuk memudahkan eksperimen dan penggantian model dalam pipeline, proyek ini menyediakan folder `list train model/` yang berisi beberapa skrip pelatihan model machine learning yang sudah distandarisasi.
