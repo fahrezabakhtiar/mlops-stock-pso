@@ -4,3 +4,4 @@ linear_regression,0.0196068314870572,BBNI,linear_regression
 linear_regression,0.0186572584904645,BBRI,linear_regression
 linear_regression,0.0194552666843925,BMRI,linear_regression
 linear_regression,0.0269687627524732,GOTO,linear_regression
+decision_tree,0.1075229212969054,TLKM,decision_tree
