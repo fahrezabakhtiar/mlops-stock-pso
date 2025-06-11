@@ -56,7 +56,10 @@ Jika disalin dan dicommit ke `train.py`, maka setiap file skrip:
 ### Python Packages
 - `yfinance` — ekstraksi data saham dari Yahoo Finance  
 - `pandas`, `numpy` — manipulasi dan analisis data  
-- `scikit-learn` — pelatihan dan evaluasi model machine learning  
+- `scikit-learn` — pelatihan dan evaluasi model machine learning
+- `XGBoost` — library untuk Extreme Gradient Boosting
+- `LightGBM` — library gradient boosting dari Microsoft
+- `CatBoost` — library gradient boosting dari Yandex
 - `plotly` — visualisasi interaktif  
 - `streamlit` — UI dashboard prediksi
 
