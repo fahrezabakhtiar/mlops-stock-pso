@@ -1,6 +1,3 @@
-# Tujuan: Memilih model terbaik (MAPE terkecil) untuk setiap ticker dan menyimpannya sebagai _best_model.pkl
-# Juga menghasilkan ringkasan performa semua model yang telah dilatih.
-
 import os
 import glob
 import pandas as pd
@@ -50,14 +47,14 @@ def main():
     for _, row in best_rows.iterrows():
         ticker = row["ticker"]
         model_type = row["model_type"]
-        pattern = f"{ticker}_{model_type}_model.pkl"
-        model_path = os.path.join(MODELS_DIR, pattern)
-        if os.path.exists(model_path):
-            best_model_path = os.path.join(MODELS_DIR, f"{ticker}_best_model.pkl")
-            shutil.copyfile(model_path, best_model_path)
-            print(f"Copied {model_path} -> {best_model_path}")
+        source_model_file = os.path.join(MODELS_DIR, f"{ticker}_{model_type}.pkl")
+        best_model_path = os.path.join(MODELS_DIR, f"{ticker}_best_model.pkl")
+
+        if os.path.exists(source_model_file):
+            shutil.copyfile(source_model_file, best_model_path)
+            print(f"Copied {source_model_file} -> {best_model_path}")
         else:
-            print(f"Warning: Model file not found for {ticker} ({model_path})")
+            print(f"Warning: Model file not found for {ticker} ({source_model_file})")
 
     # Menyimpan ringkasan model terbaik ke file CSV
     best_summary_path = os.path.join(MODELS_DIR, "best_models_summary.csv")
