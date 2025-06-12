@@ -146,8 +146,9 @@ You can now view your Streamlit app in your browser.
   Network URL: http://192.168.0.104:8501 (IP lokal bisa berubah tergantung koneksi dan DHCP)
 ```
 
-  ![image](https://github.com/user-attachments/assets/b415423e-6f44-4c82-99ec-87a6ee9a1a57)
-  ![image](https://github.com/user-attachments/assets/7cd944ea-f858-48e2-b010-7af3c11c6bd0)
+![image](https://github.com/user-attachments/assets/14338a7c-5d76-452c-ad67-7f1abc947cb6)
+![image](https://github.com/user-attachments/assets/5670310a-cd65-4589-9659-94c9c9b56420)
+
 
 7. Menonaktifkan venv
 
