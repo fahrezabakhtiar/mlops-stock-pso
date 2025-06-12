@@ -3,7 +3,7 @@ name: MLOps Stock Forecast Pipeline
 on:
   push:
     branches:
-      - main
+      - ticker-global
 
     paths:
       - '.github/workflows/**'
