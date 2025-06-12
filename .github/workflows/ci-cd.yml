@@ -3,13 +3,14 @@ name: MLOps Stock Forecast Pipeline
 on:
   push:
     branches:
-      - main
+      - trainautomation
 
     paths:
       - '.github/workflows/**'
       - 'src/**'
       - 'models/**'
       - 'data/**'
+      - 'list train model/**'
       - 'app/**'
       - 'requirements.txt'
 jobs:
