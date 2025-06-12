@@ -1,7 +1,7 @@
 model,mape,ticker,model_type
-linear_regression,0.0138339735950773,BBCA,linear_regression
-linear_regression,0.0197396765619092,BBNI,linear_regression
-linear_regression,0.0186804158077635,BBRI,linear_regression
-linear_regression,0.0195964104874722,BMRI,linear_regression
+linear_regression,0.0138339742001201,BBCA,linear_regression
+linear_regression,0.0197396758439102,BBNI,linear_regression
+linear_regression,0.0186804172277621,BBRI,linear_regression
+linear_regression,0.0195964105087198,BMRI,linear_regression
 linear_regression,0.0273826004284374,GOTO,linear_regression
 linear_regression,0.018026564040341,TLKM,linear_regression

@@ -7,13 +7,13 @@ svr,0.0679848673189863,BBNI,svr
 random_forest,0.0335492869266984,GOTO,random_forest
 svr,0.0518127129249185,BBRI,svr
 knn,0.0214753706883818,BBRI,knn
-linear_regression,0.0186804158077635,BBRI,linear_regression
+linear_regression,0.0186804172277621,BBRI,linear_regression
 decision_tree,0.0266074215742136,BBRI,decision_tree
 random_forest,0.0217940310063474,BBNI,random_forest
 decision_tree,0.0266363376370627,BMRI,decision_tree
-linear_regression,0.0197396765619092,BBNI,linear_regression
+linear_regression,0.0197396758439102,BBNI,linear_regression
 svr,0.0964146004508376,BBCA,svr
-linear_regression,0.0138339735950773,BBCA,linear_regression
+linear_regression,0.0138339742001201,BBCA,linear_regression
 knn,0.0292041993180906,BMRI,knn
 svr,0.0437294725804981,GOTO,svr
 knn,0.0263210525531775,BBNI,knn
@@ -26,6 +26,6 @@ decision_tree,0.01832593976738,BBCA,decision_tree
 random_forest,0.0224774937161169,BMRI,random_forest
 decision_tree,0.0250780711058505,BBNI,decision_tree
 decision_tree,0.0421014878734663,GOTO,decision_tree
-linear_regression,0.0195964104874722,BMRI,linear_regression
+linear_regression,0.0195964105087198,BMRI,linear_regression
 decision_tree,0.1073916680007812,TLKM,decision_tree
 knn,0.0175619402176739,BBCA,knn
