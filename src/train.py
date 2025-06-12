@@ -1,77 +1,68 @@
-# Tahapan Train: Melatih model prediksi harga saham untuk setiap ticker
-# dan menyimpan model serta metrik evaluasinya (MAPE).
-
+# train.py
 import os
+import glob
+import importlib.util
 import pandas as pd
 import numpy as np
 import pickle
-from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_percentage_error
-from config import TICKERS  # Mengimpor daftar ticker dari config.py
+from config import TICKERS
 
-def create_windows(series, window_size=5):
-    """
-    Membagi data time series menjadi window untuk supervised learning.
+# Path ke folder yang berisi skrip-skrip model
+MODELS_SRC_DIR = os.path.join(os.path.dirname(__file__), "list train model")
+# Folder output untuk model dan MAPE
+OUTPUT_MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "models")
+os.makedirs(OUTPUT_MODELS_DIR, exist_ok=True)
 
-    Args:
-        series (array): Deret harga saham (Close).
-        window_size (int): Ukuran window (jumlah data sebelumnya untuk prediksi).
+def discover_model_scripts(src_dir):
+    """Kembalikan list path .py di folder model, kecuali __init__.py."""
+    pattern = os.path.join(src_dir, "*.py")
+    files = [f for f in glob.glob(pattern) if not os.path.basename(f).startswith("__")]
+    return files
 
-    Returns:
-        tuple: X (fitur), y (target) dalam bentuk numpy array.
-    """
-    X, y = [], []
+def import_model_module(path):
+    """Import sebuah file .py sebagai modul, kembalikan namespace-nya."""
+    module_name = os.path.splitext(os.path.basename(path))[0]
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+def train_all_models(ticker, window_size=5):
+    # Baca data dan buat window (sama seperti sebelumnya)...
+    df = pd.read_csv(f"data/raw/{ticker}.csv")
+    series = df['Close'].values
+    # -- buat fitur/target --
+    X = []
+    y = []
     for i in range(len(series) - window_size):
         X.append(series[i:i+window_size])
         y.append(series[i+window_size])
-    return np.array(X), np.array(y)
-
-def train_linear_regression_model(ticker, window_size=5):
-    """
-    Melatih model Linear Regression untuk prediksi harga saham ticker tertentu.
-
-    Args:
-        ticker (str): Kode saham tanpa akhiran .JK.
-        window_size (int): Jumlah langkah historis yang digunakan untuk prediksi.
-    """
-    # Menentukan direktori data dan model
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
-    MODELS_DIR = os.path.join(ROOT_DIR, "models")
-    os.makedirs(MODELS_DIR, exist_ok=True)
-
-    # Membaca data harga historis
-    df = pd.read_csv(os.path.join(RAW_DIR, f"{ticker}.csv"))
-    series = df['Close'].values
-
-    # Membuat window data
-    X, y = create_windows(series, window_size)
-
-    # Membagi data menjadi train dan test set (80-20 split)
+    X = np.array(X)
+    y = np.array(y)
     split = int(0.8 * len(X))
     X_train, X_test = X[:split], X[split:]
     y_train, y_test = y[:split], y[split:]
 
-    # Melatih model Linear Regression
-    model = LinearRegression()
-    model.fit(X_train, y_train)
+    # Temukan dan jalankan tiap skrip model
+    for script_path in discover_model_scripts(MODELS_SRC_DIR):
+        mod = import_model_module(script_path)
+        model_name = os.path.splitext(os.path.basename(script_path))[0]  # e.g. linear_regression_model
+        # Asumsi: setiap modul punya fungsi build_and_train(X_train, y_train, X_test, y_test)
+        # yang mengembalikan (trained_model, mape_score)
+        model, mape = mod.build_and_train(X_train, y_train, X_test, y_test)
 
-    # Melakukan prediksi dan evaluasi menggunakan MAPE
-    preds = model.predict(X_test)
-    mape = mean_absolute_percentage_error(y_test, preds)
+        # Simpan model .pkl
+        model_file = os.path.join(OUTPUT_MODELS_DIR, f"{ticker}_{model_name}.pkl")
+        with open(model_file, "wb") as f:
+            pickle.dump(model, f)
 
-    # Menyimpan model dalam format .pkl dengan penamaan sesuai konvensi pipeline
-    model_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_model.pkl")
-    with open(model_path, "wb") as f:
-        pickle.dump(model, f)
-    print(f"Saved model: {model_path}")
+        # Simpan MAPE
+        mape_file = os.path.join(OUTPUT_MODELS_DIR, f"{ticker}_{model_name}_mape.csv")
+        pd.DataFrame([{"model": model_name, "mape": mape}]).to_csv(mape_file, index=False)
 
-    # Menyimpan nilai MAPE dalam file CSV agar dapat dibaca oleh tahapan berikutnya (evaluate/predict)
-    mape_path = os.path.join(MODELS_DIR, f"{ticker}_linear_regression_mape.csv")
-    pd.DataFrame([{"model": "linear_regression", "mape": mape}]).to_csv(mape_path, index=False)
-    print(f"MAPE for {ticker} (Linear Regression): {mape:.4f}, saved to {mape_path}")
+        print(f"[{ticker}] Model {model_name} done. MAPE={mape:.4f}")
 
-# Melatih model untuk seluruh ticker saat file ini dijalankan langsung
 if __name__ == "__main__":
-    for ticker in TICKERS:
-        train_linear_regression_model(ticker)
+    for t in TICKERS:
+        train_all_models(t)
