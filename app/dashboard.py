@@ -9,8 +9,8 @@ from config import TICKERS
 MODEL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models"))
 
 # --- Header ---
-st.set_page_config(page_title="Stock Forecast Dashboard - Jakarta Stock Exchange", layout="wide")
-st.title("📈 Jakarta Stock Exchange Forecasting Dashboard")
+st.set_page_config(page_title="Stock Forecast Dashboard - Global Stock Exchange", layout="wide")
+st.title("📈 Global Stock Exchange Forecasting Dashboard")
 st.caption("30-Day Forecasting Powered by Machine Learning")
 
 # --- Sidebar ---
