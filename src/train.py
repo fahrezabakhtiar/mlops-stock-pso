@@ -1,4 +1,5 @@
-# train.py
+# src/train.py
+
 import os
 import glob
 import importlib.util
@@ -8,10 +9,14 @@ import pickle
 from sklearn.metrics import mean_absolute_percentage_error
 from config import TICKERS
 
+# Dapatkan path ke root project (naik satu level dari src/)
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Path ke folder yang berisi skrip-skrip model
-MODELS_SRC_DIR = os.path.join(os.path.dirname(__file__), "list train model")
+MODELS_SRC_DIR = os.path.join(ROOT_DIR, "list train model")
+
 # Folder output untuk model dan MAPE
-OUTPUT_MODELS_DIR = os.path.join(os.path.dirname(__file__), "..", "models")
+OUTPUT_MODELS_DIR = os.path.join(ROOT_DIR, "models")
 os.makedirs(OUTPUT_MODELS_DIR, exist_ok=True)
 
 def discover_model_scripts(src_dir):
@@ -29,17 +34,20 @@ def import_model_module(path):
     return mod
 
 def train_all_models(ticker, window_size=5):
-    # Baca data dan buat window (sama seperti sebelumnya)...
-    df = pd.read_csv(f"data/raw/{ticker}.csv")
+    # Path ke data
+    data_path = os.path.join(ROOT_DIR, "data", "raw", f"{ticker}.csv")
+    df = pd.read_csv(data_path)
     series = df['Close'].values
+
     # -- buat fitur/target --
-    X = []
-    y = []
+    X, y = [], []
     for i in range(len(series) - window_size):
         X.append(series[i:i+window_size])
         y.append(series[i+window_size])
     X = np.array(X)
     y = np.array(y)
+
+    # Split train/test
     split = int(0.8 * len(X))
     X_train, X_test = X[:split], X[split:]
     y_train, y_test = y[:split], y[split:]
@@ -47,12 +55,12 @@ def train_all_models(ticker, window_size=5):
     # Temukan dan jalankan tiap skrip model
     for script_path in discover_model_scripts(MODELS_SRC_DIR):
         mod = import_model_module(script_path)
-        model_name = os.path.splitext(os.path.basename(script_path))[0]  # e.g. linear_regression_model
-        # Asumsi: setiap modul punya fungsi build_and_train(X_train, y_train, X_test, y_test)
-        # yang mengembalikan (trained_model, mape_score)
+        model_name = os.path.splitext(os.path.basename(script_path))[0]
+
+        # Asumsi fungsi di dalam file model bernama `build_and_train`
         model, mape = mod.build_and_train(X_train, y_train, X_test, y_test)
 
-        # Simpan model .pkl
+        # Simpan model
         model_file = os.path.join(OUTPUT_MODELS_DIR, f"{ticker}_{model_name}.pkl")
         with open(model_file, "wb") as f:
             pickle.dump(model, f)
