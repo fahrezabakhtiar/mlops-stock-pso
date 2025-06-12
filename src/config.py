@@ -3,4 +3,4 @@
 # karena akhiran tersebut akan ditambahkan secara otomatis pada tahapan extract.
 
 # List ticker saham dari Bursa Efek Indonesia
-TICKERS = ['BBRI', 'BMRI', 'BBCA', 'BBNI','GOTO','TLKM','ASII']
+TICKERS = ['BBRI.JK', 'BMRI.JK', 'BBCA.JK', 'BBNI.JK','GOTO.JK','TLKM.JK','ASII.JK', 'TSLA']
