@@ -8,10 +8,10 @@ Kunjungi link berikut ini: https://stock-mlops-1c.streamlit.app/
 
 ## 🚀 Fitur Utama
 - Ekstraksi data historis saham dari Yahoo Finance
-- Pelatihan model (bisa disesuaikan setiap commit code train.py)
+- Pelatihan model (bisa disesuaikan setiap menambahkan model di folder `list train model`)
 - Evaluasi MAPE otomatis dan seleksi model terbaik
 - Prediksi 30 hari ke depan (business days)
-- Dashboard interaktif via Streamlit (Pilih Ticker, Download Hasil Prediksi dengan Model Terbaik, Pilih Rentang Tanggal, Interaksi dengan Grafik dan Tabel)
+- Dashboard interaktif via Streamlit (Pilih Ticker, Download Hasil Prediksi dengan Model Terbaik, Pilih Rentang Tanggal, Interaksi dengan Grafik dan Tabel, Download Hasil Evaluasi MAPE Semua Model)
 - Pipeline otomatis via GitHub Actions
 
 ## ⚙️ Konfigurasi Fleksibel untuk Test Pipeline
@@ -168,9 +168,7 @@ Klik Deploy!
 
 6. Aplikasi berhasil di-deploy dan dapat diakses serta dibagikan menggunakan URL Anda.
 ![image](https://github.com/user-attachments/assets/3edf3edd-d1c1-4be7-b4d7-7c9a5a8ceded)
-![image](https://github.com/user-attachments/assets/21a0620c-b1b1-4ebd-b30f-382047de4721)
-
-
+![image](https://github.com/user-attachments/assets/a7548c2f-7071-4c3a-a91b-c63f850fd515)
 
 ## 📦 Checklist Penting untuk Deployment:
  * ✅`requirements.txt` lengkap
