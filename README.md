@@ -1,5 +1,5 @@
 # MLOps Stock Forecasting Dashboard (Global Stock Exchange)
-  ![image](https://github.com/user-attachments/assets/42af9ce1-45c5-466a-90d8-cb4b55d2680e)
+![image](https://github.com/user-attachments/assets/57a98a20-299b-4680-9fd6-4496d3ca6582)
 
 Merupakan project dashboard dan pipeline end-to-end untuk prediksi harga saham menggunakan pendekatan machine learning (time series), dilengkapi dengan CI/CD, evaluasi model otomatis, pemilihan model terbaik, dan visualisasi hasil prediksi (dashboarding) via Streamlit.
 
