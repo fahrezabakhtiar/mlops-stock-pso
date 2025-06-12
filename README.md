@@ -181,7 +181,10 @@ Klik Deploy!
   ![image](https://github.com/user-attachments/assets/c3606bbb-3d20-4b24-b2ff-d5f9e0315977)
 
 6. Aplikasi berhasil di-deploy dan dapat diakses serta dibagikan menggunakan URL Anda.
-   ![image](https://github.com/user-attachments/assets/16edc54a-d1da-4e2e-90b1-119482d108f4)
+![image](https://github.com/user-attachments/assets/3edf3edd-d1c1-4be7-b4d7-7c9a5a8ceded)
+![image](https://github.com/user-attachments/assets/21a0620c-b1b1-4ebd-b30f-382047de4721)
+
+
 
 ## 📦 Checklist Penting untuk Deployment:
  * ✅`requirements.txt` lengkap
