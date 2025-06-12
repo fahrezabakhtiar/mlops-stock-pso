@@ -1,45 +1,40 @@
-import os
-import pandas as pd
+# knn.py
+# Folder: list train model/
+# Skrip standar untuk melatih model K-Nearest Neighbors Regressor
+# Fungsi utama: build_and_train(X_train, y_train, X_test, y_test)
+
 import numpy as np
-import pickle
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_absolute_percentage_error
-from config import TICKERS
 
-def create_windows(series, window_size=5):
-    X, y = [], []
-    for i in range(len(series) - window_size):
-        X.append(series[i:i+window_size])
-        y.append(series[i+window_size])
-    return np.array(X), np.array(y)
 
-def train_knn_model(ticker, window_size=5):
-    ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    RAW_DIR = os.path.join(ROOT_DIR, "data", "raw")
-    MODELS_DIR = os.path.join(ROOT_DIR, "models")
-    os.makedirs(MODELS_DIR, exist_ok=True)
+def build_and_train(
+    X_train: np.ndarray,
+    y_train: np.ndarray,
+    X_test: np.ndarray,
+    y_test: np.ndarray
+):
+    """
+    Build and train a K-Nearest Neighbors Regressor model, then evaluate using MAPE.
 
-    df = pd.read_csv(os.path.join(RAW_DIR, f"{ticker}.csv"))
-    series = df['Close'].values
-    X, y = create_windows(series, window_size)
-    split = int(0.8 * len(X))
-    X_train, X_test = X[:split], X[split:]
-    y_train, y_test = y[:split], y[split:]
+    Args:
+        X_train (np.ndarray): Training features, shape (n_samples, window_size).
+        y_train (np.ndarray): Training targets, shape (n_samples,).
+        X_test  (np.ndarray): Test features, shape (n_samples, window_size).
+        y_test  (np.ndarray): Test targets, shape (n_samples,).
 
+    Returns:
+        model: Trained KNeighborsRegressor instance.
+        mape (float): Mean Absolute Percentage Error on test set.
+    """
+    # 1. Initialize and train model
     model = KNeighborsRegressor(n_neighbors=5)
     model.fit(X_train, y_train)
+
+    # 2. Predict on test set
     preds = model.predict(X_test)
+
+    # 3. Calculate MAPE
     mape = mean_absolute_percentage_error(y_test, preds)
 
-    model_path = os.path.join(MODELS_DIR, f"{ticker}_knn_model.pkl")
-    with open(model_path, "wb") as f:
-        pickle.dump(model, f)
-    print(f"Saved model: {model_path}")
-
-    mape_path = os.path.join(MODELS_DIR, f"{ticker}_knn_mape.csv")
-    pd.DataFrame([{"model": "knn", "mape": mape}]).to_csv(mape_path, index=False)
-    print(f"MAPE for {ticker} (KNeighborsRegressor): {mape:.4f}, saved to {mape_path}")
-
-if __name__ == "__main__":
-    for ticker in TICKERS:
-        train_knn_model(ticker)
+    return model, mape
