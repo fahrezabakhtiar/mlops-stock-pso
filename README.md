@@ -23,19 +23,10 @@ Tanggal awal data (`start=`) bisa disesuaikan di `extract.py` sesuai kebutuhan, 
 ```python
 fetch_data(tickers, start="2020-01-01")
 ```
-### 🔄 Model Training (`train.py`)
-File `train.py` dapat disesuaikan dengan model-model yang diinginkan (Linear Regression, Random Forest, SVR, dll). Setiap model yang dilatih akan otomatis teregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main pada path yang didefinisikan di `ci-cd.yml`.
+### 🔄 Model Training (folder `list train model`)
+Folder `list train model` dapat ditambah dengan model-model baru yang diinginkan. Setiap model yang ditambahkan akan otomatis dilatih + diregistrasi dan hasil MAPE-nya disimpan sebagai file `*_mape.csv`. Pipeline akan otomatis memilih model terbaik berdasarkan MAPE setiap kali CI/CD di-trigger oleh commit (push) di branch main pada path yang didefinisikan di `ci-cd.yml`.
 
-## 🧠 Folder `list train model/` — Kumpulan Model Siap Pakai
-Untuk memudahkan eksperimen dan penggantian model dalam pipeline, proyek ini menyediakan folder `list train model/` yang berisi beberapa skrip pelatihan model machine learning yang sudah distandarisasi.
-
-Jika disalin dan dicommit ke `train.py`, maka setiap file skrip:
-- Menggunakan struktur template yang seragam
-- Menyimpan model hasil pelatihan ke direktori `models/`
-- Mencatat performa (MAPE) ke dalam file `.csv`
-- Akan terdeteksi otomatis oleh pipeline untuk proses seleksi model terbaik
-
-### 📦 Daftar Model yang Tersedia
+### 📦 Daftar Model yang Sudah Tersedia
 | Model                          | File Python                      |
 |--------------------------------|----------------------------------|
 | CatBoost                       | `catboost.py`          |
@@ -47,10 +38,6 @@ Jika disalin dan dicommit ke `train.py`, maka setiap file skrip:
 | Ridge Regression               | `ridge.py`             |
 | Support Vector Regressor (SVR) | `svr.py`               |
 | XGBoost                        | `xgboost.py`           |
-
-### 💡Cara Pakai
-* Cukup salin isi salah satu file ke dalam `train.py` untuk mengubah model pelatihan. Hasil evaluasi otomatis akan digunakan oleh pipeline saat commit dijalankan.
-* Folder ini juga berguna sebagai referensi untuk menambahkan model baru ke pipeline CI/CD tanpa perlu menulis ulang.
 
 ## 🧰 Tools yang Digunakan
 ### Python Packages
@@ -130,7 +117,7 @@ Setelah venv aktif, install dengan:
 pip install -r requirements.txt
 ```
 
-5. Anda terlebih dahulu dapat mengubah `config.py`, `extract.py`,`train.py` jika diinginkan, lalu jalankan pipeline end-to-end.
+5. Anda terlebih dahulu dapat mengubah `config.py`, `extract.py`, dan menambahkan model baru di dalam folder `list train model` jika diinginkan, lalu jalankan pipeline end-to-end.
    
 ```bash 
 python src/main.py
@@ -146,8 +133,7 @@ You can now view your Streamlit app in your browser.
   Network URL: http://192.168.0.104:8501 (IP lokal bisa berubah tergantung koneksi dan DHCP)
 ```
 
-![image](https://github.com/user-attachments/assets/14338a7c-5d76-452c-ad67-7f1abc947cb6)
-![image](https://github.com/user-attachments/assets/5670310a-cd65-4589-9659-94c9c9b56420)
+(input foto dashboard versi local dan network URL disini)
 
 
 7. Menonaktifkan venv
