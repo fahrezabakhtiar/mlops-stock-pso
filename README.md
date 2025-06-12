@@ -1,4 +1,4 @@
-# MLOps Stock Forecasting Dashboard (Jakarta Stock Exchange)
+# MLOps Stock Forecasting Dashboard (Global Stock Exchange)
   ![image](https://github.com/user-attachments/assets/42af9ce1-45c5-466a-90d8-cb4b55d2680e)
 
 Merupakan project dashboard dan pipeline end-to-end untuk prediksi harga saham menggunakan pendekatan machine learning (time series), dilengkapi dengan CI/CD, evaluasi model otomatis, pemilihan model terbaik, dan visualisasi hasil prediksi (dashboarding) via Streamlit.
@@ -7,7 +7,7 @@ Merupakan project dashboard dan pipeline end-to-end untuk prediksi harga saham m
 Kunjungi link berikut ini: https://stock-mlops-1c.streamlit.app/
 
 ## 🚀 Fitur Utama
-- Ekstraksi data historis saham dari Yahoo Finance (ticker `.JK`)
+- Ekstraksi data historis saham dari Yahoo Finance
 - Pelatihan model (bisa disesuaikan setiap commit code train.py)
 - Evaluasi MAPE otomatis dan seleksi model terbaik
 - Prediksi 30 hari ke depan (business days)
@@ -16,7 +16,7 @@ Kunjungi link berikut ini: https://stock-mlops-1c.streamlit.app/
 
 ## ⚙️ Konfigurasi Fleksibel untuk Test Pipeline
 ### 📈 Ticker Saham (`config.py`)
-Daftar ticker dapat diubah dengan bebas melalui `src/config.py` selama merupakan kode saham dari **Bursa Efek Indonesia (dengan akhiran `.JK`)**, misalnya `BBRI`, `BMRI`, `BBCA`, dll.
+Daftar ticker dapat diubah dengan bebas melalui `src/config.py`
 
 ### 🗓️ Rentang Data Historis ('extract.py')
 Tanggal awal data (`start=`) bisa disesuaikan di `extract.py` sesuai kebutuhan, misalnya:
