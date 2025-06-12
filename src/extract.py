@@ -31,14 +31,17 @@ def fetch_data(tickers, start="2022-01-01", end=None):
     for ticker in tickers:
         print(f"Fetching {ticker}...")
 
-        # Unduh data historis saham dengan penyesuaian dividen dan stock split
-        df = yf.download(ticker + ".JK", start=start, end=end, auto_adjust=True)
+        # Jika ticker BEI tanpa .JK, kasih warning (opsional)
+        if ticker.isalpha() and ticker.isupper() and 4 <= len(ticker) <= 5 and not ticker.endswith('.JK'):
+            print(f"Warning: BEI ticker tanpa akhiran .JK: {ticker}")
 
-        # Jika data kosong, tampilkan peringatan
+        yf_ticker = ticker  # Ambil apa adanya
+
+        df = yf.download(yf_ticker, start=start, end=end, auto_adjust=True)
+
         if df.empty:
             print(f"Warning: No data for {ticker}")
             continue
-
         # Jika kolom berupa MultiIndex, ratakan jadi kolom tunggal
         if isinstance(df.columns, pd.MultiIndex):
             df.columns = ['_'.join(col).strip() for col in df.columns.values]
