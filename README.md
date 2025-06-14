@@ -1,4 +1,4 @@
-# MLOps Stock Forecasting Dashboard (Global Stock Exchange)
+# MLOps Stock Forecasting Dashboard
 ![image](https://github.com/user-attachments/assets/57a98a20-299b-4680-9fd6-4496d3ca6582)
 
 Merupakan project dashboard dan pipeline end-to-end untuk prediksi harga saham menggunakan pendekatan machine learning (time series), dilengkapi dengan CI/CD, evaluasi model otomatis, pemilihan model terbaik, dan visualisasi hasil prediksi (dashboarding) via Streamlit.
@@ -133,8 +133,8 @@ You can now view your Streamlit app in your browser.
   Network URL: http://192.168.0.104:8501 (IP lokal bisa berubah tergantung koneksi dan DHCP)
 ```
 
-(input foto dashboard versi local dan network URL disini)
-
+![image](https://github.com/user-attachments/assets/c31118b2-84bf-4c1b-882f-269fff11ef1a)
+![image](https://github.com/user-attachments/assets/151a9952-42de-42dc-b9ec-3055cd820519)
 
 7. Menonaktifkan venv
 
