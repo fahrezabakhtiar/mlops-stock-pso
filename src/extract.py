@@ -13,7 +13,7 @@ def fetch_data(tickers, start="2022-01-01", end=None):
     dan menyimpannya dalam bentuk file CSV di direktori data/raw.
 
     Args:
-        tickers (list): Daftar kode saham (tanpa .JK).
+        tickers (list): Daftar kode saham
         start (str): Tanggal awal data dalam format YYYY-MM-DD.
         end (str, optional): Tanggal akhir data. Jika None, pakai tanggal hari ini.
     """
@@ -31,11 +31,7 @@ def fetch_data(tickers, start="2022-01-01", end=None):
     for ticker in tickers:
         print(f"Fetching {ticker}...")
 
-        # Jika ticker BEI tanpa .JK, kasih warning (opsional)
-        if ticker.isalpha() and ticker.isupper() and 4 <= len(ticker) <= 5 and not ticker.endswith('.JK'):
-            print(f"Warning: BEI ticker tanpa akhiran .JK: {ticker}")
-
-        yf_ticker = ticker  # Ambil apa adanya
+        yf_ticker = ticker
 
         df = yf.download(yf_ticker, start=start, end=end, auto_adjust=True)
 
