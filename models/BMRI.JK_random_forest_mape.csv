@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 random_forest,0.0221862989957505
+=======
+random_forest,0.02217682770402072
+>>>>>>> 8c87f7683e8a441a25808288e9e0fe4bf0acea9c

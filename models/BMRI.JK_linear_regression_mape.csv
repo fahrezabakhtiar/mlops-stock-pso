@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 linear_regression,0.019330730492321903
+=======
+linear_regression,0.019330730676992623
+>>>>>>> 8c87f7683e8a441a25808288e9e0fe4bf0acea9c
