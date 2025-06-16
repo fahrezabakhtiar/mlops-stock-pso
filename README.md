@@ -62,14 +62,15 @@ Folder `list train model` dapat ditambah dengan model-model baru yang diinginkan
 git clone https://github.com/fahrezabakhtiar/mlops-stock-pso
 ```
 
-2. Buat virtual environment 
+2. Buat virtual environment
+
 2.1 Pastikan Python sudah terinstall
    
 ```bash 
 python --version
 ```
 
-Jika python tidak dikenali, coba:
+2.2 Jika python tidak dikenali, coba:
 
 ```bash 
 python3 --version
@@ -92,6 +93,7 @@ python3 -m venv venv
 Ini akan membuat folder venv/ berisi semua dependency terisolasi.
 
 3. Aktifkan Virtual Environment
+
 Windows:
 
 ```bash 
@@ -174,8 +176,6 @@ Klik Deploy!
  * ✅`requirements.txt` lengkap
  * ✅`dashboard.py` bisa di-run dengan streamlit run
  * ✅Tidak ada path hardcoded local
- * ✅Gunakan `config.py` untuk parameter yang fleksibel
- * ✅Hindari penulisan file di root saat di cloud (pakai folder `models/`, `data/`, dll)
 
 ## 💡 Kelebihan Deploy dengan Streamlit
 * Gratis dan cepat
