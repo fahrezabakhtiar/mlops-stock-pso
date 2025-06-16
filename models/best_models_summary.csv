@@ -1,4 +1,5 @@
 model,mape,ticker,model_type
+<<<<<<< HEAD
 linear_regression,0.0143052475052854,AAPL,linear_regression
 ridge,0.0258977039060047,ANTM.JK,ridge
 ridge,0.013228007667728,ASII.JK,ridge
@@ -12,3 +13,18 @@ ridge,0.0151400562415786,PGAS.JK,ridge
 ridge,0.0179799983595192,TLKM.JK,ridge
 ridge,0.0358521727086721,TSLA,ridge
 linear_regression,0.0256958855998708,UNVR.JK,linear_regression
+=======
+linear_regression,0.0143450210282693,AAPL,linear_regression
+ridge,0.0259810882544966,ANTM.JK,ridge
+ridge,0.0131977920251606,ASII.JK,ridge
+linear_regression,0.0138436179109801,BBCA.JK,linear_regression
+linear_regression,0.0194124978828951,BBNI.JK,linear_regression
+linear_regression,0.0184511153922913,BBRI.JK,linear_regression
+linear_regression,0.0193307304923219,BMRI.JK,linear_regression
+ridge,0.0273672179166413,GOTO.JK,ridge
+ridge,0.0115038214544605,MSFT,ridge
+ridge,0.0151187442063454,PGAS.JK,ridge
+ridge,0.0180107222975823,TLKM.JK,ridge
+ridge,0.035982175029589,TSLA,ridge
+linear_regression,0.0256431391263996,UNVR.JK,linear_regression
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b

@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 ridge,0.01381773730963708
+=======
+ridge,0.013843618088041517
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b

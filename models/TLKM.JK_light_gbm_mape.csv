@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 light_gbm,0.08700168622576955
+=======
+light_gbm,0.08711869393824336
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b

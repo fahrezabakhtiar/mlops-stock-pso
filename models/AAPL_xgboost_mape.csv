@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 xgboost,0.028348653680550145
+=======
+xgboost,0.028438039596678035
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b

@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 decision_tree,0.03185158275376869
+=======
+decision_tree,0.028706692176087265
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b

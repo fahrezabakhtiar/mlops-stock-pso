@@ -1,2 +1,6 @@
 model,mape
+<<<<<<< HEAD
 knn,0.3356194957210971
+=======
+knn,0.3336496094260408
+>>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b
