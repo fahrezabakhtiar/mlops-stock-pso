@@ -1,17 +1,5 @@
-# ci-cd.yml
-# Nama Workflow: MLOps Stock Forecast Pipeline
-# Deskripsi:
-# Workflow CI/CD otomatis untuk menjalankan pipeline end-to-end:
-# - Mengambil data historis saham (extract)
-# - Melatih semua model ML
-# - Memilih model terbaik berdasarkan MAPE
-# - Melakukan prediksi harga 30 hari ke depan
-# - Menyimpan dan meng-commit hasil ke repository GitHub
-# - Mengirim notifikasi email jika pipeline berhasil atau gagal
-
 name: MLOps Stock Forecast Pipeline
 
-# Trigger pipeline setiap ada push ke branch `main` dengan perubahan di folder penting
 on:
   push:
     branches:
@@ -27,7 +15,7 @@ on:
 
 jobs:
   mlops-pipeline:
-    runs-on: ubuntu-latest  # Jalankan di runner Ubuntu
+    runs-on: ubuntu-latest
 
     steps:
       # 1. Clone repo
@@ -66,15 +54,15 @@ jobs:
         run: |
           python src/predict.py
 
-      # 8. Commit hasil (models dan raw data) ke repository
-      - name: Commit and Push Model & Results to Repo
+      # 8. Commit hasil ke branch irsyad-branch (bukan main!)
+      - name: Commit and Push Model & Results to irsyad-branch
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add models/* data/raw/* || true
           git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin ${{ github.ref }}
+          git push origin HEAD:irsyad-branch
 
       # 9. Kirim email jika pipeline berhasil
       - name: Send Success Email Notification
@@ -117,4 +105,3 @@ jobs:
             🔀 Branch   : ${{ github.ref_name }}
             🔖 Commit   : ${{ github.sha }}
             🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
