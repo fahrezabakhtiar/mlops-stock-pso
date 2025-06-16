@@ -1,6 +1,2 @@
 model,mape
-<<<<<<< HEAD
-catboost,0.020663506683991056
-=======
-catboost,0.020845836540758483
->>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b
+catboost,0.020845835663286724

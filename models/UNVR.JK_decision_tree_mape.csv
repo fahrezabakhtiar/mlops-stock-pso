@@ -1,6 +1,2 @@
 model,mape
-<<<<<<< HEAD
-decision_tree,0.3653869705377588
-=======
-decision_tree,0.3618274353969385
->>>>>>> 0dcaf9a3cfc9c1fec7c3d4c46d49da5f75bd3a6b
+decision_tree,0.3618275782364387
