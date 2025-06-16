@@ -1,9 +1,14 @@
-yfinance
-pandas
-numpy
-scikit-learn
-xgboost
-lightgbm
-catboost
-plotly
-streamlit
+# === Core Dependencies ===
+yfinance        # Untuk mengambil data historis saham dari Yahoo Finance
+pandas          # Untuk manipulasi dan analisis data tabular
+numpy           # Untuk operasi numerik dan array
+
+# === Machine Learning Libraries ===
+scikit-learn    # Library ML umum: preprocessing, model, dan evaluasi
+xgboost         # Gradient boosting model populer berbasis decision tree
+lightgbm        # Model boosting ringan dan cepat dari Microsoft
+catboost        # Model boosting dari Yandex, mendukung data kategori secara native
+
+# === Visualization & Dashboard ===
+plotly          # Visualisasi interaktif (misalnya grafik prediksi saham)
+streamlit       # Untuk membangun web dashboard/data app secara cepat

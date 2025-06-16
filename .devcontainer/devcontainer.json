@@ -1,7 +1,17 @@
 {
+  // devcontainer.json
+  // Deskripsi:
+  // Konfigurasi untuk lingkungan pengembangan containerized (Dev Container) berbasis Python 3.11
+  // yang digunakan untuk membangun dan menjalankan aplikasi machine learning prediksi harga saham
+  // berbasis Streamlit. Konfigurasi ini dirancang untuk kompatibilitas dengan VS Code Dev Containers
+  // dan GitHub Codespaces.
+
   "name": "Python 3",
-  // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+
+  // Gunakan image Python resmi dari Microsoft DevContainers dengan basis Debian Bullseye
   "image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
+
+  // Kustomisasi tampilan awal ketika container terbuka, termasuk file yang otomatis dibuka
   "customizations": {
     "codespaces": {
       "openFiles": [
@@ -10,6 +20,7 @@
       ]
     },
     "vscode": {
+      // Ekstensi yang akan otomatis diinstal untuk pengembangan Python
       "settings": {},
       "extensions": [
         "ms-python.python",
@@ -17,16 +28,27 @@
       ]
     }
   },
+
+  // Perintah yang dijalankan setelah konten workspace tersedia:
+  // - Instal package dari packages.txt (jika ada)
+  // - Instal requirements.txt dan Streamlit
   "updateContentCommand": "[ -f packages.txt ] && sudo apt update && sudo apt upgrade -y && sudo xargs apt install -y <packages.txt; [ -f requirements.txt ] && pip3 install --user -r requirements.txt; pip3 install --user streamlit; echo '✅ Packages installed and Requirements met'",
+
+  // Perintah yang dijalankan setelah container terpasang dan siap digunakan:
+  // - Jalankan Streamlit dashboard
   "postAttachCommand": {
     "server": "streamlit run app/dashboard.py --server.enableCORS false --server.enableXsrfProtection false"
   },
+
+  // Konfigurasi port 8501 untuk Streamlit, otomatis terbuka dalam mode preview
   "portsAttributes": {
     "8501": {
       "label": "Application",
       "onAutoForward": "openPreview"
     }
   },
+
+  // Forward port Streamlit agar bisa diakses dari luar container
   "forwardPorts": [
     8501
   ]
