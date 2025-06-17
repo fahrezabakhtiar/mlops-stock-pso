@@ -1,12 +1,26 @@
 # decision_tree.py
 # Folder: list train model/
-# Skrip standar untuk melatih model Decision Tree Regressor
-# Fungsi utama: build_and_train(X_train, y_train, X_test, y_test)
+# Deskripsi:
+# Skrip ini digunakan untuk melatih model regresi menggunakan DecisionTreeRegressor
+# dari scikit-learn. Model ini merupakan baseline sederhana untuk memprediksi data
+# time series dengan pendekatan sliding window.
+
+# Fungsi utama:
+# - build_and_train: Membangun, melatih, dan mengevaluasi model Decision Tree Regressor
+#   berdasarkan data training dan testing yang telah disiapkan.
+
+# Dependencies:
+# - numpy: Untuk pemrosesan data numerik dalam bentuk array.
+# - sklearn.tree.DecisionTreeRegressor: Model regresi berbasis pohon keputusan.
+# - sklearn.metrics.mean_absolute_percentage_error: Untuk evaluasi performa model dengan MAPE.
+
+# Output:
+# - Objek model DecisionTreeRegressor terlatih.
+# - Nilai MAPE (Mean Absolute Percentage Error) pada data test sebagai indikator akurasi.
 
 import numpy as np
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_percentage_error
-
 
 def build_and_train(
     X_train: np.ndarray,
@@ -15,26 +29,26 @@ def build_and_train(
     y_test: np.ndarray
 ):
     """
-    Build and train a Decision Tree Regressor model, then evaluate using MAPE.
+    Melatih model Decision Tree Regressor dan menghitung akurasi menggunakan MAPE.
 
     Args:
-        X_train (np.ndarray): Training features, shape (n_samples, window_size).
-        y_train (np.ndarray): Training targets, shape (n_samples,).
-        X_test  (np.ndarray): Test features, shape (n_samples, window_size).
-        y_test  (np.ndarray): Test targets, shape (n_samples,).
+        X_train (np.ndarray): Fitur training, ukuran (n_samples, window_size).
+        y_train (np.ndarray): Target training, ukuran (n_samples,).
+        X_test  (np.ndarray): Fitur testing, ukuran (n_samples, window_size).
+        y_test  (np.ndarray): Target testing, ukuran (n_samples,).
 
     Returns:
-        model: Trained DecisionTreeRegressor instance.
-        mape (float): Mean Absolute Percentage Error on test set.
+        model: Objek DecisionTreeRegressor yang telah dilatih.
+        mape (float): Mean Absolute Percentage Error (MAPE) pada data test.
     """
-    # 1. Initialize and fit model
+    # 1. Inisialisasi dan pelatihan model
     model = DecisionTreeRegressor(random_state=42)
     model.fit(X_train, y_train)
 
-    # 2. Predict on test set
+    # 2. Prediksi pada data test
     preds = model.predict(X_test)
 
-    # 3. Calculate MAPE
+    # 3. Hitung MAPE
     mape = mean_absolute_percentage_error(y_test, preds)
 
     return model, mape
