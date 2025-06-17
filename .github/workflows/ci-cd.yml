@@ -15,7 +15,7 @@ name: MLOps Stock Forecast Pipeline
 on:
   push:
     branches:
-      - main
+      - Final-Testing
     paths:
       - '.github/workflows/**'
       - 'src/**'
@@ -46,37 +46,50 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Jalankan tahap Extract untuk mengunduh data saham
+      # 4. Bersihkan Folder data/raw
+      - name: Bersihkan Folder data/raw
+        run: |
+          rm -rf data/raw/*
+
+      # 5. Bersihkan Folder models
+      - name: Bersihkan Folder models
+        run: |
+          rm -rf models/*
+          
+      # 6. Jalankan tahap Extract untuk mengunduh data saham
       - name: Extract Data
         run: |
           python src/extract.py
 
-      # 5. Jalankan training model
+      # 7. Jalankan training model
       - name: Train Model
         run: |
           python src/train.py
 
-      # 6. Pilih model terbaik berdasarkan metrik MAPE
+      # 8. Pilih model terbaik berdasarkan metrik MAPE
       - name: Select Best Model
         run: |
           python src/select_best_model.py
 
-      # 7. Lakukan prediksi harga 30 hari ke depan
+      # 9. Lakukan prediksi harga 30 hari ke depan
       - name: Predict 30 Hari ke Depan
         run: |
           python src/predict.py
 
-      # 8. Commit hasil (models dan raw data) ke repository
-      - name: Commit and Push Model & Results to Repo
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add models/* data/raw/* || true
-          git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin ${{ github.ref }}
+      # # 10. Commit hasil (models dan raw data) ke repository
+      # - name: Commit and Push Model & Results to Repo
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      # 9. Kirim email jika pipeline berhasil
+      #     # Tambahkan semua perubahan termasuk penghapusan file
+      #     git add --all
+    
+      #     git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
+      #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      #     git push origin ${{ github.ref }}
+
+      # 11. Kirim email jika pipeline berhasil
       - name: Send Success Email Notification
         if: success()
         uses: dawidd6/action-send-mail@v3
@@ -91,13 +104,14 @@ jobs:
           from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
           body: |
             🎉 Pipeline **BERHASIL** dijalankan.
-
+            
+            🧑 Oleh     : [${{ github.actor }}](https://github.com/${{ github.actor }})
             📦 Repo     : ${{ github.repository }}
             🔀 Branch   : ${{ github.ref_name }}
             🔖 Commit   : ${{ github.sha }}
             🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # 10. Kirim email jika pipeline gagal
+      # 12. Kirim email jika pipeline gagal
       - name: Send Failure Email Notification
         if: failure()
         uses: dawidd6/action-send-mail@v3
@@ -112,9 +126,11 @@ jobs:
           from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
           body: |
             ❌ Pipeline **GAGAL** dijalankan.
-
+            
+            🧑 Oleh     : [${{ github.actor }}](https://github.com/${{ github.actor }})
             📦 Repo     : ${{ github.repository }}
             🔀 Branch   : ${{ github.ref_name }}
             🔖 Commit   : ${{ github.sha }}
             🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
+
+            Harap periksa log dan perbaiki error yang terjadi sebelum mencoba lagi.
