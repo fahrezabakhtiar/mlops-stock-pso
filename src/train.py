@@ -43,7 +43,7 @@ def train_all_models(ticker, window_size=5):
     Menyimpan model hasil pelatihan dan metrik MAPE-nya.
 
     Args:
-        ticker (str): simbol saham (misal: 'BBCA', 'TLKM').
+        ticker (str): simbol saham (misal: 'BBCA.JK', 'TLKM.JK').
         window_size (int): ukuran jendela (window) untuk membuat fitur time series.
     """
     # Membaca data harga penutupan (Close) saham dari file CSV
@@ -60,7 +60,7 @@ def train_all_models(ticker, window_size=5):
     y = np.array(y)
 
     # Membagi data menjadi train dan test (80:20)
-    split = int(0.8 * len(X))
+    split = int(0.85 * len(X))
     X_train, X_test = X[:split], X[split:]
     y_train, y_test = y[:split], y[split:]
 
