@@ -15,7 +15,7 @@ name: MLOps Stock Forecast Pipeline
 on:
   push:
     branches:
-      - main
+      - Final-Test
     paths:
       - '.github/workflows/**'
       - 'src/**'
