@@ -46,33 +46,37 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      #4. 
-      - name: Bersihkan folder models dan data/raw
+      # 4. Bersihkan Folder data/raw
+      - name: Bersihkan Folder data/raw
         run: |
-          rm -rf models/*
           rm -rf data/raw/*
 
-      # 5. Jalankan tahap Extract untuk mengunduh data saham
+      # 5. Bersihkan Folder models
+      - name: Bersihkan Folder models
+        run: |
+          rm -rf models/*
+          
+      # 6. Jalankan tahap Extract untuk mengunduh data saham
       - name: Extract Data
         run: |
           python src/extract.py
 
-      # 6. Jalankan training model
+      # 7. Jalankan training model
       - name: Train Model
         run: |
           python src/train.py
 
-      # 7. Pilih model terbaik berdasarkan metrik MAPE
+      # 8. Pilih model terbaik berdasarkan metrik MAPE
       - name: Select Best Model
         run: |
           python src/select_best_model.py
 
-      # 8. Lakukan prediksi harga 30 hari ke depan
+      # 9. Lakukan prediksi harga 30 hari ke depan
       - name: Predict 30 Hari ke Depan
         run: |
           python src/predict.py
 
-      # 9. Commit hasil (models dan raw data) ke repository
+      # 10. Commit hasil (models dan raw data) ke repository
       - name: Commit and Push Model & Results to Repo
         run: |
           git config --global user.name "github-actions[bot]"
@@ -82,7 +86,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git push origin ${{ github.ref }}
 
-      # 10. Kirim email jika pipeline berhasil
+      # 11. Kirim email jika pipeline berhasil
       - name: Send Success Email Notification
         if: success()
         uses: dawidd6/action-send-mail@v3
@@ -103,7 +107,7 @@ jobs:
             🔖 Commit   : ${{ github.sha }}
             🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
-      # 11. Kirim email jika pipeline gagal
+      # 12. Kirim email jika pipeline gagal
       - name: Send Failure Email Notification
         if: failure()
         uses: dawidd6/action-send-mail@v3
