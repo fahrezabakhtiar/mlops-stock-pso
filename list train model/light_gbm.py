@@ -1,12 +1,27 @@
 # light_gbm.py
 # Folder: list train model/
-# Skrip standar untuk melatih model LightGBM Regressor
-# Fungsi utama: build_and_train(X_train, y_train, X_test, y_test)
+# Deskripsi:
+# Skrip ini digunakan untuk melatih model regresi menggunakan LightGBM Regressor
+# (LGBMRegressor), sebuah model boosting berbasis gradient yang efisien dan cepat.
+# Model ini cocok untuk digunakan pada dataset time series dengan pendekatan sliding window.
+
+# Fungsi utama:
+# - build_and_train: Membangun, melatih, dan mengevaluasi model LightGBM Regressor
+#   berdasarkan data training dan testing yang telah disiapkan.
+
+# Dependencies:
+# - numpy: Untuk representasi array numerik.
+# - lightgbm.LGBMRegressor: Model regresi dari library LightGBM.
+# - sklearn.metrics.mean_absolute_percentage_error: Untuk evaluasi performa model
+#   menggunakan metrik MAPE (Mean Absolute Percentage Error).
+
+# Output:
+# - Objek model LGBMRegressor yang telah dilatih.
+# - Nilai MAPE (Mean Absolute Percentage Error) pada data test.
 
 import numpy as np
 from lightgbm import LGBMRegressor
 from sklearn.metrics import mean_absolute_percentage_error
-
 
 def build_and_train(
     X_train: np.ndarray,
@@ -15,26 +30,26 @@ def build_and_train(
     y_test: np.ndarray
 ):
     """
-    Build and train a LightGBM Regressor model, then evaluate using MAPE.
+    Melatih model LightGBM Regressor dan menghitung akurasi menggunakan MAPE.
 
     Args:
-        X_train (np.ndarray): Training features, shape (n_samples, window_size).
-        y_train (np.ndarray): Training targets, shape (n_samples,).
-        X_test  (np.ndarray): Test features, shape (n_samples, window_size).
-        y_test  (np.ndarray): Test targets, shape (n_samples,).
+        X_train (np.ndarray): Fitur training, ukuran (n_samples, window_size).
+        y_train (np.ndarray): Target training, ukuran (n_samples,).
+        X_test  (np.ndarray): Fitur testing, ukuran (n_samples, window_size).
+        y_test  (np.ndarray): Target testing, ukuran (n_samples,).
 
     Returns:
-        model: Trained LGBMRegressor instance.
-        mape (float): Mean Absolute Percentage Error on test set.
+        model: Objek LGBMRegressor yang telah dilatih.
+        mape (float): Mean Absolute Percentage Error (MAPE) pada data test.
     """
-    # 1. Initialize and train model
+    # 1. Inisialisasi dan pelatihan model
     model = LGBMRegressor(n_estimators=100)
     model.fit(X_train, y_train)
 
-    # 2. Predict on test set
+    # 2. Prediksi pada data test
     preds = model.predict(X_test)
 
-    # 3. Calculate MAPE
+    # 3. Hitung MAPE
     mape = mean_absolute_percentage_error(y_test, preds)
 
     return model, mape
