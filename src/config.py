@@ -3,4 +3,4 @@
 # karena akhiran tersebut akan ditambahkan secara otomatis pada tahapan extract.
 
 # List ticker saham global
-TICKERS = ['BBRI.JK', 'BMRI.JK', 'BBCA.JK', 'BBNI.JK']
+TICKERS = ['BBRI.JK', 'BMRI.JK', 'BBCA.JK']
