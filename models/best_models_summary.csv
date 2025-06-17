@@ -1,4 +1,4 @@
 model,mape,ticker,model_type
-linear_regression,0.0138177372749412,BBCA.JK,linear_regression
-linear_regression,0.0180476952238364,BBRI.JK,linear_regression
-linear_regression,0.019283219200292,BMRI.JK,linear_regression
+linear_regression,0.0138177345491379,BBCA.JK,linear_regression
+linear_regression,0.0180477002722384,BBRI.JK,linear_regression
+linear_regression,0.0192832191434009,BMRI.JK,linear_regression
