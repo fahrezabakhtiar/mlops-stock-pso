@@ -81,33 +81,6 @@ if os.path.exists(csv_path):
 else:
     st.warning(f"❌ File prediksi `{ticker}_forecast_30d.csv` tidak ditemukan.")
 
-# Menampilkan akurasi semua model berdasarkan MAPE
-mape_path = os.path.join(MODEL_DIR, "all_models_mape_summary.csv")
-if os.path.exists(mape_path):
-    mape_df = pd.read_csv(mape_path).round({"mape": 4})
-    ticker_mapes = mape_df[mape_df['ticker'] == ticker].copy().sort_values("mape").reset_index(drop=True)
-
-    if not ticker_mapes.empty:
-        best_row = ticker_mapes.iloc[0]
-        best_model = best_row["model_type"].replace("_", " ").title()
-        best_mape = best_row["mape"]
-
-        st.info(f"Model Terbaik: {best_model} | MAPE: {best_mape:.4f}")
-        st.markdown(f"### Model Terbaik: **{best_model}**")
-
-        st.markdown("### Perbandingan Akurasi Semua Model")
-        st.dataframe(
-            ticker_mapes[["model_type", "mape"]]
-            .rename(columns={"model_type": "Model", "mape": "MAPE"})
-            .reset_index(drop=True),
-            use_container_width=True,
-            hide_index=True if "hide_index" in st.dataframe.__code__.co_varnames else False
-        )
-    else:
-        st.warning("📉 Tidak ada data MAPE untuk ticker ini.")
-else:
-    st.warning("📁 File `all_models_mape_summary.csv` belum ditemukan di folder models/.")
-
 # Footer
 st.markdown("---")
 st.caption("Made with Streamlit")
