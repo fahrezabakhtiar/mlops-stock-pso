@@ -104,7 +104,8 @@ jobs:
           from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
           body: |
             🎉 Pipeline **BERHASIL** dijalankan.
-
+            
+            🧑 Oleh     : [${{ github.actor }}](https://github.com/${{ github.actor }})
             📦 Repo     : ${{ github.repository }}
             🔀 Branch   : ${{ github.ref_name }}
             🔖 Commit   : ${{ github.sha }}
@@ -125,9 +126,11 @@ jobs:
           from: MLOps Pipeline Bot <${{ secrets.EMAIL_USERNAME }}>
           body: |
             ❌ Pipeline **GAGAL** dijalankan.
-
+            
+            🧑 Oleh     : [${{ github.actor }}](https://github.com/${{ github.actor }})
             📦 Repo     : ${{ github.repository }}
             🔀 Branch   : ${{ github.ref_name }}
             🔖 Commit   : ${{ github.sha }}
             🔗 Log      : https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
-            
+
+            Harap periksa log dan perbaiki error yang terjadi sebelum mencoba lagi.
