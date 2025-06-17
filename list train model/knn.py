@@ -1,12 +1,27 @@
 # knn.py
 # Folder: list train model/
-# Skrip standar untuk melatih model K-Nearest Neighbors Regressor
-# Fungsi utama: build_and_train(X_train, y_train, X_test, y_test)
+# Deskripsi:
+# Skrip ini digunakan untuk melatih model regresi menggunakan K-Nearest Neighbors (KNN)
+# dari scikit-learn. Cocok digunakan sebagai baseline sederhana dalam memprediksi data
+# time series berbasis sliding window.
+
+# Fungsi utama:
+# - build_and_train: Membangun, melatih, dan mengevaluasi model KNN Regressor
+#   dengan menggunakan data training dan testing.
+
+# Dependencies:
+# - numpy: Untuk pemrosesan array numerik.
+# - sklearn.neighbors.KNeighborsRegressor: Model KNN untuk regresi.
+# - sklearn.metrics.mean_absolute_percentage_error: Untuk menghitung MAPE
+#   sebagai metrik evaluasi performa.
+
+# Output:
+# - Objek model KNeighborsRegressor yang telah dilatih.
+# - Nilai MAPE (Mean Absolute Percentage Error) sebagai ukuran akurasi model.
 
 import numpy as np
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.metrics import mean_absolute_percentage_error
-
 
 def build_and_train(
     X_train: np.ndarray,
@@ -15,26 +30,26 @@ def build_and_train(
     y_test: np.ndarray
 ):
     """
-    Build and train a K-Nearest Neighbors Regressor model, then evaluate using MAPE.
+    Melatih model K-Nearest Neighbors Regressor dan menghitung akurasi menggunakan MAPE.
 
     Args:
-        X_train (np.ndarray): Training features, shape (n_samples, window_size).
-        y_train (np.ndarray): Training targets, shape (n_samples,).
-        X_test  (np.ndarray): Test features, shape (n_samples, window_size).
-        y_test  (np.ndarray): Test targets, shape (n_samples,).
+        X_train (np.ndarray): Fitur training, ukuran (n_samples, window_size).
+        y_train (np.ndarray): Target training, ukuran (n_samples,).
+        X_test  (np.ndarray): Fitur testing, ukuran (n_samples, window_size).
+        y_test  (np.ndarray): Target testing, ukuran (n_samples,).
 
     Returns:
-        model: Trained KNeighborsRegressor instance.
-        mape (float): Mean Absolute Percentage Error on test set.
+        model: Objek KNeighborsRegressor yang telah dilatih.
+        mape (float): Mean Absolute Percentage Error (MAPE) pada data test.
     """
-    # 1. Initialize and train model
+    # 1. Inisialisasi dan pelatihan model
     model = KNeighborsRegressor(n_neighbors=5)
     model.fit(X_train, y_train)
 
-    # 2. Predict on test set
+    # 2. Prediksi pada data test
     preds = model.predict(X_test)
 
-    # 3. Calculate MAPE
+    # 3. Hitung MAPE
     mape = mean_absolute_percentage_error(y_test, preds)
 
     return model, mape
