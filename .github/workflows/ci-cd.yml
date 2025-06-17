@@ -76,18 +76,18 @@ jobs:
         run: |
           python src/predict.py
 
-      # 10. Commit hasil (models dan raw data) ke repository
-      - name: Commit and Push Model & Results to Repo
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      # # 10. Commit hasil (models dan raw data) ke repository
+      # - name: Commit and Push Model & Results to Repo
+      #   run: |
+      #     git config --global user.name "github-actions[bot]"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Tambahkan semua perubahan termasuk penghapusan file
-          git add --all
+      #     # Tambahkan semua perubahan termasuk penghapusan file
+      #     git add --all
     
-          git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git push origin ${{ github.ref }}
+      #     git commit -m "Auto-commit: update models and results" || echo "Nothing to commit"
+      #     git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      #     git push origin ${{ github.ref }}
 
       # 11. Kirim email jika pipeline berhasil
       - name: Send Success Email Notification
