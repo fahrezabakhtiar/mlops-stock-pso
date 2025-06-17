@@ -33,11 +33,10 @@ st.set_page_config(page_title="Stock Forecast Dashboard - Global Stock Exchange"
 st.title("📈 Global Stock Exchange Forecasting Dashboard")
 st.caption("30-Day Forecasting Powered by Machine Learning")
 
-# Sidebar konfigurasi
+# Sidebar
 st.sidebar.header("⚙️ Konfigurasi")
-if st.sidebar.button("🔄 Refresh Ticker List"):
-    st.experimental_rerun()
 
+# Sidebar: pilih ticker
 ticker = st.sidebar.selectbox("Pilih Ticker", TICKERS)
 
 # Load file forecast
